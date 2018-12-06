@@ -6,7 +6,6 @@
     </el-breadcrumb>
   </div>
 </template>
-
 <script>
     export default {
         name: "myHeader"
