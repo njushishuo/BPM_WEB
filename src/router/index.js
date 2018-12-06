@@ -12,7 +12,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/manage',
+      path: '/',
       name: 'sideBar',
       component: Manage,
       children:[

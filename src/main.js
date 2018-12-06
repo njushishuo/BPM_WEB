@@ -3,10 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Axios from 'axios'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 
-
+Axios.defaults.baseURL = 'http://localhost:8080/'
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 

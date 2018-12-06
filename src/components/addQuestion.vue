@@ -1,10 +1,16 @@
 <template>
-  <p> add question </p>
+  <div>
+    <my-header></my-header>
+    <p> add question </p>
+  </div>
 </template>
 
 <script>
+  import MyHeader from "./myHeader";
+
   export default {
-    name: 'addQuestion'
+    name: 'addQuestion',
+    components: {MyHeader}
   }
 </script>
 
