@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Manage from '@/components/manage'
 import Home from '@/components/home'
+import UserList from '@/components/userList'
 import QuestionList from '@/components/questionList'
 import ProjectList from '@/components/projectList'
 import AddQuestion from '@/components/addQuestion'
@@ -20,6 +21,11 @@ export default new Router({
           path:'',
           component:Home,
           meta:[],
+        },
+        {
+          path:'/userList',
+          component:UserList,
+          mata:['数据管理','用户列表']
         },
         {
           path:'/projectList',
