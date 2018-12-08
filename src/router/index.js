@@ -25,22 +25,22 @@ export default new Router({
         {
           path:'/userList',
           component:UserList,
-          mata:['数据管理','用户列表']
+          meta:['数据管理','用户列表']
         },
         {
           path:'/projectList',
           component:ProjectList,
-          mata:['数据管理','项目列表']
+          meta:['数据管理','项目列表']
         },
         {
           path:'/questionList',
           component:QuestionList,
-          mata:['数据管理','试题列表']
+          meta:['数据管理','试题列表']
         },
         {
           path:'/addQuestion',
           component:AddQuestion,
-          mata:['添加数据','添加试题']
+          meta:['添加数据','添加试题']
         }
       ]
     }
