@@ -70,7 +70,7 @@
   import MyHeader from "./myHeader";
 
   let sys_labels = [];
-  let charCodeOfA = "A".charCodeAt(0);
+
 
   export default {
     name: 'addQuestion',

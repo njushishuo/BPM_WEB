@@ -1,122 +1,108 @@
 <template>
-    <div class="fillcontain">
-        <my-header></my-header>
-        <div class="table_container">
-            <el-table
-                :data="tableData"
-                highlight-current-row
-                style="width: 100%">
-                <el-table-column
-                  type="index"
-                  width="100">
-                </el-table-column>
-                <el-table-column
-                  property="username"
-                  label="用户名"
-                  width="220">
-                </el-table-column>
-              <el-table-column
-                property="nickname"
-                label="用户昵称"
-                width="220">
-              </el-table-column>
-              <el-table-column
-                property="company"
-                label="公司名称">
-              </el-table-column>
-            </el-table>
-            <div class="Pagination" style="text-align: left;margin-top: 10px;">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="currentPage"
-                  :page-size="15"
-                  layout="total, prev, pager, next"
-                  :total="count">
-                </el-pagination>
-            </div>
-        </div>
+  <div class="fillcontain">
+    <my-header></my-header>
+    <div class="table_container">
+      <el-table
+        :data="this.showData"
+        highlight-current-row
+        style="width: 100%">
+        <el-table-column
+          type="index"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          property="nickname"
+          label="用户名"
+          width="220">
+        </el-table-column>
+        <el-table-column
+          property="nickname"
+          label="用户昵称"
+          width="220">
+        </el-table-column>
+        <el-table-column
+          property="company"
+          label="公司名称">
+        </el-table-column>
+        <el-table-column
+          property="city"
+          label="所在城市">
+        </el-table-column>
+      </el-table>
+      <div class="Pagination" style="text-align: left;margin-top: 10px;">
+        <el-pagination
+          @size-change=""
+          @current-change="this.handleCurrentChange"
+          :current-page="this.currentPage"
+          :page-size="this.limit"
+          layout="total, prev, pager, next"
+          :total="this.count">
+        </el-pagination>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-    import MyHeader from '@/components/myHeader'
-    export default {
-        name: 'userList',
+  import MyHeader from '@/components/myHeader'
+  import UserService from '@/services/userService'
 
-    	  components: {
-          MyHeader,
-    	  },
+  export default {
+    name: 'userList',
+    components: {
+      MyHeader
+    },
 
-        data(){
-        return {
-          tableData: [{
-            username: '675342907',
-            nickname: '东光太郎',
-            company: '个人',
-          }, {
-            username: '118953210',
-            nickname: '小智',
-            company: '个人',
-          },{
-            username: '77412350',
-            nickname: '大古队员',
-            company: '个人',
-          }, {
-            username: '27851371',
-            nickname: '矢的猛老师',
-            company: '个人',
-          }],
-          currentRow: null,
-          offset: 0,
-          limit: 15,
-          count: 0,
-          currentPage: 1,
+    data () {
+      return {
+        tableData: [],
+        showData:[],
+        limit: 10,
+        count: 0,
+        currentPage: 1
+      }
+    },
+
+    created () {
+      this.getUserListFuc();
+    },
+
+    methods: {
+      handleCurrentChange (val) {
+        this.currentPage = val;
+        this.showData = [];
+        var start = (this.currentPage-1)*this.limit;
+        var end = start + this.limit;
+        for(var i=start,j=0; i< end && i< this.tableData.length ; i++,j++){
+          this.showData[j] = this.tableData[i]
         }
-        },
-        created(){
-            // this.initData();
-        },
-        methods: {
-            async initData(){
-                try{
-                    const countData = await getUserCount();
-                    if (countData.status == 1) {
-                        this.count = countData.count;
-                    }else{
-                        throw new Error('获取数据失败');
-                    }
-                    this.getUsers();
-                }catch(err){
-                    console.log('获取数据失败', err);
-                }
-            },
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                this.currentPage = val;
-                this.offset = (val - 1)*this.limit;
-                this.getUsers()
-            },
-            async getUsers(){
-                const Users = await getUserList({offset: this.offset, limit: this.limit});
-                this.tableData = [];
-                Users.forEach(item => {
-                    const tableData = {};
-                    tableData.username = item.username;
-                    tableData.registe_time = item.registe_time;
-                    tableData.city = item.city;
-                    this.tableData.push(tableData);
-                })
-            }
-        },
+      },
+
+      getUserListFuc () {
+          UserService.getUserList().then((res)=>{
+          this.tableData = res.data.User;
+           console.log("tableData:/n");
+           console.log(this.tableData);
+          this.count = this.tableData.length;
+
+
+          for(var i = 0; i < this.limit && i< this.count; i++){
+              this.showData[i] = this.tableData[i];
+          }
+
+          console.log("showData:/n");
+          console.log(this.showData);
+        });
+
+      }
     }
+  }
 </script>
 
 <style lang="less">
-	@import '../style/mixin';
-    .table_container{
-        padding: 20px;
-    }
+  @import '../style/mixin';
+
+  .table_container {
+    padding: 20px;
+  }
 </style>

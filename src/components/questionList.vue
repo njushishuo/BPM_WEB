@@ -3,7 +3,7 @@
     <my-header></my-header>
     <div class="table_container">
       <el-table
-        :data="tableData"
+        :data="showData"
         style="width: 100%">
         <el-table-column type="expand">
           <template slot-scope="props">
@@ -13,7 +13,7 @@
               </el-form-item>
               <div v-if=" props.row.quesType != '论述题' ">
                 <el-form-item label="问题选项">
-                  <div v-for="item in props.row.option"><input type="radio" /> <span>{{item}}</span> </div>
+                  <div v-for="item in props.row.option"><input type="radio"/> <span>{{item}}</span></div>
                 </el-form-item>
               </div>
               <el-form-item label="参考答案">
@@ -39,19 +39,20 @@
             <el-button
               size="mini"
               type="danger"
-              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              @click="handleDelete(scope.$index, scope.row)">删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
 
       <div class="Pagination">
         <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-size="20"
+          @size-change=""
+          @current-change="this.handleCurrentChange"
+          :current-page="this.currentPage"
+          :page-size="this.limit"
           layout="total, prev, pager, next"
-          :total="count">
+          :total="this.count">
         </el-pagination>
       </div>
     </div>
@@ -59,86 +60,110 @@
 </template>
 
 <script>
-  import MyHeader from "./myHeader";
+  import MyHeader from './myHeader'
+  import QuestionService from '@/services/questionService'
+  import UtilService from '@/services/util'
 
   export default {
     name: 'questionList',
     components: {MyHeader},
-    data(){
+    data () {
       return {
-        offset: 0,
-        limit: 20,
+        labelMap: new Map(),
+        showData: [],
+        limit: 10,
         count: 0,
-        tableData: [{
-          quesDesc:'对二维数组正确定义的形式是:int a(2)(3);是否正确？',
-          quesType:'多项选择',
-          label:['C++','array'],
-          option:['正确','错误'],
-          answer:'B'
-        }, {
-          quesDesc:'若有说明: int a[][4]={0,0};则下面不正确的叙述是（）',
-          quesType:'多项选择',
-          label:['C++','array'],
-          option:[
-            '数组 a 的每个元素都可得到初值0',
-            '二维数组 a 的第一维大小为1',
-            '因为二维数组 a 中第二维大小的值除经初值个数的商为1,故数组 a 的行数为1',
-            '有元素 a[0][0]和 a[0][1]可得到初值0,其余元素均得不到初值0'],
-          answer:'D'
-          },
-          {
-            quesDesc:'在Linux 系统中，在运行一个程序时，程序中未初始化的全局变量会被加载到以下哪个内存段中?',
-            quesType:'多项选择',
-            label:['linux'],
-            option:[
-              'BSS',
-              'TEXT',
-              'DATA',
-              'STACK'],
-            answer:'A'
-          },
-          {
-            quesDesc:'请详细描述Http的请求过程?',
-            quesType:'论述题',
-            label:['network'],
-            answer:'client 发出 request, server 发出response'
-          }],
+        tableData: [],
         currentPage: 1,
       }
     },
-    created(){
-      // this.initData();
+    created () {
+      this.getQuestions()
     },
     methods: {
-      async initData () {
-        try {
-          this.city = await cityGuess();
-          const countData = await getResturantsCount();
-          if (countData.status == 1) {
-            this.count = countData.count;
-          } else {
-            throw new Error('获取数据失败');
-          }
-          this.getResturants();
-        } catch (err) {
-          console.log('获取数据失败', err);
+      handleCurrentChange (val) {
+        this.currentPage = val
+        this.showData = []
+        var start = (this.currentPage - 1) * this.limit
+        var end = start + this.limit
+        for (var i = start, j = 0; i < end && i < this.tableData.length; i++, j++) {
+          this.showData[j] = this.tableData[i]
         }
-      }, async getResturants () {
-        const {latitude, longitude} = this.city;
-        const restaurants = await getResturants({latitude, longitude, offset: this.offset, limit: this.limit});
-        this.tableData = [];
-        restaurants.forEach(item => {
-          const tableData = {};
-          tableData.name = item.name;
-          tableData.address = item.address;
-          tableData.description = item.description;
-          tableData.id = item.id;
-          tableData.phone = item.phone;
-          tableData.rating = item.rating;
-          tableData.recent_order_num = item.recent_order_num;
-          tableData.category = item.category;
-          tableData.image_path = item.image_path;
-          this.tableData.push(tableData);
+      },
+
+      getLabels () {
+        QuestionService.getLabelList().then((res) => {
+          var tempData = res.data.Label
+          console.log('labels:/n')
+          console.log(tempData)
+          tempData.map((obj) => {
+            this.labelMap.set(obj.id + '', obj.label_name)
+          })
+          // console.log(this.labelMap);
+
+        })
+      },
+
+      getLabelNamesByLabelIdsString (ids) {
+        var labelIds = []
+        var labelNames = []
+        if (ids.lastIndexOf(';') != -1) {
+          labelIds = ids.split(';')
+        } else {
+          labelIds[0] = ids
+        }
+
+        labelIds.map((obj) => {
+          labelNames.push(this.labelMap.get(obj))
+        })
+
+        return labelNames
+      },
+
+      getQuestions () {
+        if (this.labelMap.size == 0) {
+          this.getLabels()
+        }
+
+        QuestionService.getQuestionList().then((res) => {
+          var tempData = res.data.Question
+          console.log('questions:/n')
+          console.log(tempData)
+          this.count = tempData.length
+          tempData.map((obj) => {
+
+            var question_type = UtilService.question_type_map.get(obj.question_type)
+            var labelNames = this.getLabelNamesByLabelIdsString(obj.labels)
+
+            if (obj.question_type == 'ESSAY') {
+              this.tableData.push({
+                quesDesc: obj.question_desc,
+                quesType: question_type,
+                label: labelNames,
+                answer: obj.answer
+              })
+            }
+
+            if (obj.question_type == 'MULTIPLE_CHOICE') {
+              var options = obj.answer.split(';')
+              var charCode = UtilService.charCodeOfA + parseInt(options[options.length - 1])
+              var answer = String.fromCharCode(charCode)
+              options.splice(options.length - 1, 1)
+              this.tableData.push({
+                quesDesc: obj.question_desc,
+                quesType: question_type,
+                label: labelNames,
+                option: options,
+                answer: answer
+              })
+            }
+          })
+
+          for (var i = 0; i < this.limit && i < this.count; i++) {
+            this.showData[i] = this.tableData[i]
+          }
+          console.log('showData:/n')
+          console.log(this.showData)
         })
       }
     }
