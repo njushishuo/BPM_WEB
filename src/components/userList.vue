@@ -11,7 +11,7 @@
           width="100">
         </el-table-column>
         <el-table-column
-          property="nickname"
+          property="username"
           label="用户名"
           width="220">
         </el-table-column>
