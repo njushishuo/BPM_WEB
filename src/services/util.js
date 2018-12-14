@@ -10,8 +10,11 @@ question_type_map.set("MULTIPLE_CHOICE","选择题");
 
 const charCodeOfA =65;
 
+const limit = 5;
+
 export default {
   recruit_type_map,
   question_type_map,
-  charCodeOfA
+  charCodeOfA,
+  limit
 }

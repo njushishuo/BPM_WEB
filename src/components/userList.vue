@@ -46,6 +46,7 @@
 <script>
   import MyHeader from '@/components/myHeader'
   import UserService from '@/services/userService'
+  import UtilService from '@/services/util'
 
   export default {
     name: 'userList',
@@ -57,7 +58,7 @@
       return {
         tableData: [],
         showData:[],
-        limit: 10,
+        limit: UtilService.limit,
         count: 0,
         currentPage: 1
       }

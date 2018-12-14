@@ -47,7 +47,7 @@
 <script>
   import MyHeader from "./myHeader";
   import ProjectService from '@/services/projectService';
-  import TypeService from '@/services/util';
+  import UtilService from '@/services/util';
 
   export default {
     name: 'projectList',
@@ -56,7 +56,7 @@
       return {
         tableData: [],
         showData:[],
-        limit: 10,
+        limit: UtilService.limit,
         count: 0,
         currentPage: 1
       }
@@ -83,7 +83,7 @@
           // console.log(this.tableData);
           this.count = this.tableData.length;
           this.tableData.map((obj)=>{
-            obj.recruit_type = TypeService.recruit_type_map.get(obj.recruit_type);
+            obj.recruit_type = UtilService.recruit_type_map.get(obj.recruit_type);
           })
           for(var i = 0; i < this.limit && i< this.count; i++){
             this.showData[i] = this.tableData[i];

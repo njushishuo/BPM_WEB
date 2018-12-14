@@ -39,7 +39,7 @@
             <el-button
               size="mini"
               type="danger"
-              @click="handleDelete(scope.$index, scope.row)">删除
+              @click="handleDelete(scope.$index,scope.row)">删除
             </el-button>
           </template>
         </el-table-column>
@@ -71,7 +71,7 @@
       return {
         labelMap: new Map(),
         showData: [],
-        limit: 10,
+        limit: UtilService.limit,
         count: 0,
         tableData: [],
         currentPage: 1,
@@ -81,6 +81,9 @@
     created () {
       this.getQuestions()
     },
+
+
+
     methods: {
       handleCurrentChange (val) {
         this.currentPage = val
@@ -91,7 +94,7 @@
           this.showData[j] = this.tableData[i]
         }
       },
-      
+
       getLabelNamesByLabelIdsString (ids) {
         var labelIds = []
         var labelNames = []
@@ -109,52 +112,87 @@
       },
 
       async getQuestions () {
-        var res = await QuestionService.getLabelList();
-        var tempData = res.data.Label;
-        tempData.map((obj) => {
-          this.labelMap.set(obj.id + '', obj.label_name)
-        })
+        this.showData= [];
+        this.tableData = [] ;
 
-        QuestionService.getQuestionList().then((res) => {
-          var tempData = res.data.Question
-          console.log('questions:/n')
-          console.log(tempData)
-          this.count = tempData.length
+        if(this.labelMap.size == 0){
+          var res = await QuestionService.getLabelList()
+          var tempData = res.data.Label
           tempData.map((obj) => {
-
-            var question_type = UtilService.question_type_map.get(obj.question_type)
-            var labelNames = this.getLabelNamesByLabelIdsString(obj.labels)
-
-            if (obj.question_type == 'ESSAY') {
-              this.tableData.push({
-                quesDesc: obj.question_desc,
-                quesType: question_type,
-                label: labelNames,
-                answer: obj.answer
-              })
-            }
-
-            if (obj.question_type == 'MULTIPLE_CHOICE') {
-              var options = obj.answer.split(';')
-              var charCode = UtilService.charCodeOfA + parseInt(options[options.length - 1])
-              var answer = String.fromCharCode(charCode)
-              options.splice(options.length - 1, 1)
-              this.tableData.push({
-                quesDesc: obj.question_desc,
-                quesType: question_type,
-                label: labelNames,
-                option: options,
-                answer: answer
-              })
-            }
+            this.labelMap.set(obj.id + '', obj.label_name)
           })
+        }
 
-          for (var i = 0; i < this.limit && i < this.count; i++) {
-            this.showData[i] = this.tableData[i]
+        res = await QuestionService.getQuestionList()
+        tempData = res.data.Question
+        // console.log('questions:/n')
+        // console.log(tempData)
+        this.count = tempData.length
+        tempData.map((obj) => {
+
+          var question_type = UtilService.question_type_map.get(obj.question_type)
+          var labelNames = this.getLabelNamesByLabelIdsString(obj.labels)
+
+          if (obj.question_type == 'ESSAY') {
+            this.tableData.push({
+              id: obj.id,
+              quesDesc: obj.question_desc,
+              quesType: question_type,
+              label: labelNames,
+              answer: obj.answer
+            })
           }
-          console.log('showData:/n')
-          console.log(this.showData)
+
+          if (obj.question_type == 'MULTIPLE_CHOICE') {
+            var options = obj.answer.split(';')
+            var charCode = UtilService.charCodeOfA + parseInt(options[options.length - 1])
+            var answer = String.fromCharCode(charCode)
+            options.splice(options.length - 1, 1)
+            this.tableData.push({
+              id: obj.id,
+              quesDesc: obj.question_desc,
+              quesType: question_type,
+              label: labelNames,
+              option: options,
+              answer: answer
+            })
+          }
         })
+
+
+        for (var i = 0; i < this.limit && i < this.count; i++) {
+          this.showData[i] = this.tableData[i]
+        }
+        // console.log('showData:/n')
+        // console.log(this.showData)
+
+        console.log("fetch data complete")
+
+      },
+
+      async handleDelete(index , row){
+        console.log(row)
+        try{
+          const res = await QuestionService.deleteQuestion(row.id);
+          if (res.status == 200) {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            });
+
+            var i = index + (this.currentPage-1)*this.limit;
+            this.tableData.splice(i, 1);
+            this.showData.splice(index,1);
+          }else{
+            throw new Error(res.message)
+          }
+        }catch(err){
+          this.$message({
+            type: 'error',
+            message: err.message
+          });
+          console.log('删除失败')
+        }
       }
     }
 

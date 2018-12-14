@@ -8,7 +8,7 @@
 
           <el-form-item label="试题类型">
             <el-radio class="radio" v-model="questionForm.questionType" label="ESSAY">论述题</el-radio>
-            <el-radio class="radio" v-model="questionForm.questionType" label="MUTIPLE_CHOICE">选择题</el-radio>
+            <el-radio class="radio" v-model="questionForm.questionType" label="MULTIPLE_CHOICE">选择题</el-radio>
           </el-form-item>
 
           <el-form-item label="试题标签">
@@ -16,7 +16,7 @@
               <el-option
                 v-for="item in labels"
                 :key="item.id"
-                :label="item.name"
+                :label="item.label_name"
                 :value="item.id">
               </el-option>
             </el-select>
@@ -36,10 +36,10 @@
 
             <el-form-item label="试题选项" prop="choices">
 
-              <el-input  v-model="questionForm.choiceEdit" ></el-input>
+              <el-input v-model="questionForm.choiceEdit"></el-input>
               <el-button type="" @click="addChoice" style="margin: 10px;">添加选项</el-button>
               <el-button type="" @click="deleteChoice" style="margin: 10px;">删除选项</el-button>
-              <div v-for="item in questionForm.choices"><input type="radio" /> <span>{{item}}</span> </div>
+              <div v-for="item in questionForm.choices"><input type="radio"/> <span>{{item}}</span></div>
 
             </el-form-item>
 
@@ -56,7 +56,7 @@
 
           </el-row>
           <el-form-item>
-            <el-button type="primary" @click="addQuestion('questionForm')">确认添加食品</el-button>
+            <el-button type="primary" @click="addQuestion()">确认</el-button>
           </el-form-item>
 
         </el-form>
@@ -67,168 +67,178 @@
 </template>
 
 <script>
-  import MyHeader from "./myHeader";
-
-  let sys_labels = [];
-
+  import MyHeader from './myHeader'
+  import QuestionService from '@/services/questionService'
+  import UtilService from '@/services/util'
 
   export default {
     name: 'addQuestion',
     components: {MyHeader},
 
-    data(){
+    data () {
       return {
         questionForm: {
           questionType: 'ESSAY',
           description: '',
-          selectedLabels:[],
-          essayAnswer:'',
-          choices:[],
-          choiceAnswer:'',
-          choiceEdit:'',
-          charChoices:[],
+          selectedLabels: [],
+          essayAnswer: '',
+          choices: [],
+          choiceAnswer: '',
+          choiceEdit: '',
+          charChoices: [],
 
         },
         questionRules: {
           description: [
-            { required: true, message: '请输入试题描述', trigger: 'blur' },
+            {required: true, message: '请输入试题描述', trigger: 'blur'},
           ],
         },
 
-        labels: [{
-          id:1,
-          name: 'java',
-        },{
-          id:2,
-          name: 'c++',
-        }],
+        labels: [],
       }
     },
-    created(){
-      // this.initData();
+    created () {
+      this.getLabels()
     },
 
-
     methods: {
-      async initData(){
-        try{
 
-          if(sys_labels == null){
-            sys_labels = getLabels();
-          }
-
-          if (result.status == 1) {
-            this.labels = sys_labels;
-          }else{
-            console.log(result)
-          }
-        }catch(err){
-          console.log(err)
-        }
+      async getLabels () {
+        var res = await QuestionService.getLabelList()
+        this.labels = res.data.Label
       },
 
-      addChoice(){
-        this.questionForm.choices.push(this.questionForm.choiceEdit);
-        var charCode = this.questionForm.choices.length-1 + charCodeOfA;
+      addChoice () {
+        this.questionForm.choices.push(this.questionForm.choiceEdit)
+        var charCode = this.questionForm.choices.length - 1 + UtilService.charCodeOfA
         this.questionForm.charChoices.push(
-          {key: this.questionForm.choices.length-1,value:String.fromCharCode(charCode)} );
+          {key: this.questionForm.choices.length - 1, value: String.fromCharCode(charCode)})
 
-        this.questionForm.choiceEdit = '';
+        this.questionForm.choiceEdit = ''
       },
 
-      deleteChoice(){
-        var index = this.questionForm.choices.length-1;
-        this.questionForm.choices.splice(index,1);
-        this.questionForm.charChoices.splice(index,1);
+      deleteChoice () {
+        var index = this.questionForm.choices.length - 1
+        this.questionForm.choices.splice(index, 1)
+        this.questionForm.charChoices.splice(index, 1)
       },
-      addQuestion(foodForm){
-        this.$refs[foodForm].validate(async (valid) => {
-          if (valid) {
-            const params = {
-              ...this.questionForm,
-              question_id: this.question_id,
-            }
-            try{
-              const result = await addFood(params);
-              if (result.status == 1) {
-                console.log(result)
-                this.$message({
-                  type: 'success',
-                  message: '添加成功'
-                });
-                this.questionForm = {
-                  name: '',
-                  description: '',
-                  attributes: [],
-                }
-              }else{
-                this.$message({
-                  type: 'error',
-                  message: result.message
-                });
-              }
-            }catch(err){
-              console.log(err)
-            }
-          } else {
-            this.$notify.error({
-              title: '错误',
-              message: '请检查输入是否正确',
-              offset: 100
-            });
-            return false;
+
+      addQuestion () {
+
+        var labelsString = ''
+        this.questionForm.selectedLabels.map(
+          (item) => {
+            labelsString += item + ';'
           }
-        });
+        )
+        labelsString = labelsString.substring(0,labelsString.length-1);
+
+        if (this.questionForm.questionType == 'ESSAY') {
+          var question = {
+            question_type: 'ESSAY',
+            question_desc: this.questionForm.description,
+            answer: this.questionForm.essayAnswer,
+            labels: labelsString
+          }
+          QuestionService.addQuestion(question).then((res) => {
+            console.log(res)
+            if (res.status == 200) {
+              this.$message({
+                type: 'success',
+                message: '添加成功'
+              })
+              this.questionForm.description = '',
+              this.questionForm.selectedLabels = [],
+              this.questionForm.essayAnswer = ''
+            }
+          })
+        }else{
+
+          var answerString = '';
+          this.questionForm.choices.map((item)=>{
+            answerString+=item+';'
+          })
+          answerString = answerString.substring(0,answerString.length-1);
+          answerString += ';'+this.questionForm.choiceAnswer;
+
+          var question = {
+            question_type: 'MULTIPLE_CHOICE',
+            question_desc: this.questionForm.description,
+            answer: answerString,
+            labels: labelsString
+          }
+          QuestionService.addQuestion(question).then((res) => {
+            console.log(res)
+            if (res.status == 200) {
+              this.$message({
+                type: 'success',
+                message: '添加成功'
+              })
+              this.questionForm.description = '',
+              this.questionForm.selectedLabels = [],
+              this.questionForm.choices = [],
+              this.questionForm.choiceAnswer = '',
+              this.questionForm.choiceEdit = '',
+              this.questionForm.charChoices = []
+            }
+          })
+        }
       }
     }
   }
 </script>
 
 
-
-
-
 <style lang="less">
   @import '../style/mixin';
-  .form{
+
+  .form {
     min-width: 400px;
     margin-bottom: 30px;
-    &:hover{
-      box-shadow: 0 0 8px 0 rgba(232,237,250,.6), 0 2px 4px 0 rgba(232,237,250,.5);
+
+    &:hover {
+      box-shadow: 0 0 8px 0 rgba(232, 237, 250, .6), 0 2px 4px 0 rgba(232, 237, 250, .5);
       border-radius: 6px;
       transition: all 400ms;
     }
   }
-  .food_form{
+
+  .food_form {
     border: 1px solid #eaeefb;
     padding: 10px 10px 0;
   }
-  .form_header{
+
+  .form_header {
     text-align: center;
     margin-bottom: 10px;
   }
-  .category_select{
+
+  .category_select {
     border: 1px solid #eaeefb;
     padding: 10px 30px 10px 10px;
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
   }
-  .add_category_row{
+
+  .add_category_row {
     height: 0;
     overflow: hidden;
     transition: all 400ms;
     background: #f9fafc;
   }
-  .showEdit{
+
+  .showEdit {
     height: 185px;
   }
-  .add_category{
+
+  .add_category {
     background: #f9fafc;
     padding: 10px 30px 0px 10px;
     border: 1px solid #eaeefb;
     border-top: none;
   }
-  .add_category_button{
+
+  .add_category_button {
     text-align: center;
     line-height: 40px;
     border-bottom-right-radius: 6px;
@@ -236,21 +246,26 @@
     border: 1px solid #eaeefb;
     border-top: none;
     transition: all 400ms;
-    &:hover{
+
+    &:hover {
       background: #f9fafc;
-      span, .edit_icon{
+
+      span, .edit_icon {
         color: #20a0ff;
       }
     }
-    span{
+
+    span {
       .sc(14px, #999);
       transition: all 400ms;
     }
-    .edit_icon{
+
+    .edit_icon {
       color: #ccc;
       transition: all 400ms;
     }
   }
+
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
@@ -258,9 +273,11 @@
     position: relative;
     overflow: hidden;
   }
+
   .avatar-uploader .el-upload:hover {
     border-color: #20a0ff;
   }
+
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
@@ -269,12 +286,14 @@
     line-height: 120px;
     text-align: center;
   }
+
   .avatar {
     width: 120px;
     height: 120px;
     display: block;
   }
-  .cell{
+
+  .cell {
     text-align: center;
   }
 </style>
