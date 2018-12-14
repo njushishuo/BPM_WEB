@@ -77,6 +77,7 @@
         currentPage: 1,
       }
     },
+
     created () {
       this.getQuestions()
     },
@@ -90,20 +91,7 @@
           this.showData[j] = this.tableData[i]
         }
       },
-
-      getLabels () {
-        QuestionService.getLabelList().then((res) => {
-          var tempData = res.data.Label
-          console.log('labels:/n')
-          console.log(tempData)
-          tempData.map((obj) => {
-            this.labelMap.set(obj.id + '', obj.label_name)
-          })
-          // console.log(this.labelMap);
-
-        })
-      },
-
+      
       getLabelNamesByLabelIdsString (ids) {
         var labelIds = []
         var labelNames = []
@@ -120,10 +108,12 @@
         return labelNames
       },
 
-      getQuestions () {
-        if (this.labelMap.size == 0) {
-          this.getLabels()
-        }
+      async getQuestions () {
+        var res = await QuestionService.getLabelList();
+        var tempData = res.data.Label;
+        tempData.map((obj) => {
+          this.labelMap.set(obj.id + '', obj.label_name)
+        })
 
         QuestionService.getQuestionList().then((res) => {
           var tempData = res.data.Question
