@@ -2,7 +2,7 @@
   <div class="fillcontent">
     <div class="table_container">
       <el-table
-        :data="this.showData"
+        :data="showData"
         highlight-current-row
         style="width: 100%">
         <el-table-column

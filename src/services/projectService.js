@@ -8,5 +8,9 @@ export default {
 
   getProjectListByUserId(userId){
     return Axios.get('/Recruit/?Recruit.owner_id='+userId)
+  },
+
+  addProject(para){
+    return Axios.post('/Recruit',para)
   }
 }

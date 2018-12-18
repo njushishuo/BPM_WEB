@@ -11,7 +11,7 @@
             <el-radio class="radio" v-model="projectForm.projectType" label="WE_CHAT_APPLET">微信小程序</el-radio>
           </el-form-item>
 
-          <el-form-item label="试题标签">
+          <el-form-item label="项目标签">
             <el-select v-model="projectForm.selectedLabels" multiple placeholder="请选择">
               <el-option
                 v-for="item in labels"
@@ -22,16 +22,16 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="试题描述" prop="name">
+          <el-form-item label="项目名称" prop="name">
             <el-input v-model="projectForm.name"></el-input>
           </el-form-item>
 
-          <el-form-item label="试题描述" prop="description">
-            <el-input v-model="projectForm.description"></el-input>
+          <el-form-item label="项目描述" prop="description">
+            <el-input type="textarea" v-model="projectForm.description"></el-input>
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="addQuestion()">确认</el-button>
+            <el-button type="primary" @click="addProject()">确认</el-button>
           </el-form-item>
 
         </el-form>
@@ -44,8 +44,8 @@
 <script>
 
   import ProjectService from '../../services/projectService';
-  import LabelService from '../../services/labelService'
-  import UtilService from '../../services/util'
+  import LabelService from '../../services/labelService';
+
   export default {
     name: 'addProject',
     data () {
@@ -72,6 +72,7 @@
     created () {
       this.getLabels()
     },
+
     methods: {
 
       async getLabels () {
@@ -81,6 +82,35 @@
 
       addProject(){
 
+        var labelsString = ''
+        this.projectForm.selectedLabels.map(
+          (item) => {
+            labelsString += item + ';'
+          }
+        )
+        labelsString = labelsString.substring(0,labelsString.length-1);
+
+        var project = {
+          recruit_name : this.projectForm.name,
+          recruit_desc : this.projectForm.description,
+          recruit_type : this.projectForm.projectType,
+          owner_id: this.$cookie.get('userId'),
+          owner_nickname: this.$cookie.get('nickname')
+        }
+
+        ProjectService.addProject(project).then((res)=>{
+          // console.log(res)
+          if (res.status == 200) {
+            this.$message({
+              type: 'success',
+              message: '添加成功'
+            })
+            this.projectForm.name= '',
+            this.projectForm.description= '',
+            this.projectForm.projectType= 'WEB',
+            this.projectForm.selectedLabels= []
+          }
+        })
       }
     }
   }
