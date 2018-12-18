@@ -67,9 +67,9 @@
 </template>
 
 <script>
-  import MyHeader from './myHeader'
-  import QuestionService from '@/services/questionService'
-  import UtilService from '@/services/util'
+  import MyHeader from '../components/myHeader'
+  import QuestionService from '../services/questionService'
+  import UtilService from '../services/util'
 
   export default {
     name: 'addQuestion',

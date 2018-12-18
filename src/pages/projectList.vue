@@ -45,9 +45,9 @@
 </template>
 
 <script>
-  import MyHeader from "./myHeader";
-  import ProjectService from '@/services/projectService';
-  import UtilService from '@/services/util';
+  import MyHeader from "../components/myHeader";
+  import ProjectService from '../services/projectService';
+  import UtilService from '../services/util';
 
   export default {
     name: 'projectList',

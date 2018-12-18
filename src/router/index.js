@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Manage from '@/components/manage'
-import Home from '@/components/home'
-import UserList from '@/components/userList'
-import QuestionList from '@/components/questionList'
-import ProjectList from '@/components/projectList'
-import AddQuestion from '@/components/addQuestion'
+import Login from '@pages/login'
+import ManageSideBar from '@/components/sideBarManager'
+import RecruitSideBar from '@/components/sideBarRecruit'
+import UserList from '@/pages/userList'
+import QuestionList from '@/pages/questionList'
+import ProjectList from '@/pages/projectList'
+import AddQuestion from '@/pages/addQuestion'
 
 
 Vue.use(Router)
@@ -14,14 +15,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'sideBar',
-      component: Manage,
+      name: 'login',
+      component: Login },
+    {
+      path: '/manage',
+      name: 'manage',
+      component: ManageSideBar,
       children:[
-        {
-          path:'',
-          component:Home,
-          meta:[],
-        },
         {
           path:'/userList',
           component:UserList,
@@ -42,7 +42,34 @@ export default new Router({
           component:AddQuestion,
           meta:['添加数据','添加试题']
         }
-      ]
-    }
+      ]},
+    {
+      path: '/projectOwner',
+      name: 'owner',
+      component: RecruitSideBar,
+      children:[
+        {
+          path:'/userList',
+          component:UserList,
+          meta:['数据管理','我的项目']
+        },
+        {
+          path:'/projectList',
+          component:ProjectList,
+          meta:['数据管理','我的模板']
+        },
+        {
+          path:'/questionList',
+          component:QuestionList,
+          meta:['数据管理','我的试卷']
+        },
+        {
+          path:'/addQuestion',
+          component:AddQuestion,
+          meta:['添加数据','添加项目']
+        }
+      ]},
+
+
   ]
 })

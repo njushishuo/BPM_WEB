@@ -44,9 +44,9 @@
 </template>
 
 <script>
-  import MyHeader from '@/components/myHeader'
-  import UserService from '@/services/userService'
-  import UtilService from '@/services/util'
+  import MyHeader from '../components/myHeader'
+  import UserService from '../services/userService'
+  import UtilService from '../services/util'
 
   export default {
     name: 'userList',
