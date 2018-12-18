@@ -1,6 +1,5 @@
 <template>
   <div>
-    <my-header></my-header>
     <el-row style="margin-top: 20px;">
       <el-col :span="14" :offset="4">
         <header class="form_header">添加试题</header>
@@ -67,14 +66,11 @@
 </template>
 
 <script>
-  import MyHeader from '../components/myHeader'
-  import QuestionService from '../services/questionService'
-  import UtilService from '../services/util'
+  import QuestionService from '../../services/questionService'
+  import UtilService from '../../services/util'
 
   export default {
     name: 'addQuestion',
-    components: {MyHeader},
-
     data () {
       return {
         questionForm: {
@@ -190,7 +186,7 @@
 
 
 <style lang="less">
-  @import '../style/mixin';
+  @import '../../style/mixin';
 
   .form {
     min-width: 400px;

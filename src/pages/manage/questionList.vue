@@ -1,6 +1,5 @@
 <template>
-  <div class="fillcontain">
-    <my-header></my-header>
+  <div class="fillcontent">
     <div class="table_container">
       <el-table
         :data="showData"
@@ -60,13 +59,11 @@
 </template>
 
 <script>
-  import MyHeader from '../components/myHeader'
-  import QuestionService from '../services/questionService'
-  import UtilService from '../services/util'
+  import QuestionService from '../../services/questionService'
+  import UtilService from '../../services/util'
 
   export default {
     name: 'questionList',
-    components: {MyHeader},
     data () {
       return {
         labelMap: new Map(),

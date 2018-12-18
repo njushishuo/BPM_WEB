@@ -1,6 +1,5 @@
 <template>
-  <div class="fillcontain">
-    <my-header></my-header>
+  <div class="fillcontent">
     <div class="table_container">
       <el-table
         :data="this.showData"
@@ -11,32 +10,33 @@
           width="100">
         </el-table-column>
         <el-table-column
-          property="username"
-          label="用户名"
+          property="recruit_name"
+          label="项目名"
           width="220">
         </el-table-column>
         <el-table-column
-          property="nickname"
-          label="用户昵称"
+          property="recruit_desc"
+          label="项目描述"
+          width="300">
+        </el-table-column>
+        <el-table-column
+          property="recruit_type"
+          label="项目类型"
           width="220">
         </el-table-column>
         <el-table-column
-          property="company"
-          label="公司名称">
-        </el-table-column>
-        <el-table-column
-          property="city"
-          label="所在城市">
+          property="owner_nickname"
+          label="项目发布人">
         </el-table-column>
       </el-table>
       <div class="Pagination" style="text-align: left;margin-top: 10px;">
         <el-pagination
           @size-change=""
           @current-change="this.handleCurrentChange"
-          :current-page="this.currentPage"
-          :page-size="this.limit"
+          :current-page="currentPage"
+          :page-size="15"
           layout="total, prev, pager, next"
-          :total="this.count">
+          :total="count">
         </el-pagination>
       </div>
     </div>
@@ -44,17 +44,12 @@
 </template>
 
 <script>
-  import MyHeader from '../components/myHeader'
-  import UserService from '../services/userService'
-  import UtilService from '../services/util'
+  import ProjectService from '../../services/projectService';
+  import UtilService from '../../services/util';
 
   export default {
-    name: 'userList',
-    components: {
-      MyHeader
-    },
-
-    data () {
+    name: 'projectList',
+    data(){
       return {
         tableData: [],
         showData:[],
@@ -63,12 +58,11 @@
         currentPage: 1
       }
     },
-
-    created () {
-      this.getUserListFuc();
+    created(){
+       this.getProjects();
     },
-
     methods: {
+
       handleCurrentChange (val) {
         this.currentPage = val;
         this.showData = [];
@@ -79,31 +73,26 @@
         }
       },
 
-      getUserListFuc () {
-          UserService.getUserList().then((res)=>{
-          this.tableData = res.data.User;
-           console.log("tableData:/n");
-           console.log(this.tableData);
+      getProjects(){
+        ProjectService.getProjectList().then((res)=>{
+          this.tableData = res.data.Recruit;
+          // console.log("tableData:/n");
+          // console.log(this.tableData);
           this.count = this.tableData.length;
-
-
+          this.tableData.map((obj)=>{
+            obj.recruit_type = UtilService.recruit_type_map.get(obj.recruit_type);
+          })
           for(var i = 0; i < this.limit && i< this.count; i++){
-              this.showData[i] = this.tableData[i];
+            this.showData[i] = this.tableData[i];
           }
-
-          console.log("showData:/n");
-          console.log(this.showData);
+          // console.log("showData:/n");
+          // console.log(this.showData);
         });
-
       }
-    }
+    },
   }
 </script>
 
-<style lang="less">
-  @import '../style/mixin';
+<style scoped>
 
-  .table_container {
-    padding: 20px;
-  }
 </style>
