@@ -63,9 +63,13 @@
         console.log(users)
         if(users != null && users.length == 1){
           this.user = users[0];
-          this.$cookie.set('loginUser',this.user)
-          console.log('user login:')
-          console.log(this.user)
+          this.$cookie.set('userId',this.user.id)
+          this.$cookie.set('username',this.user.username)
+          this.$cookie.set('nickname',this.user.nickname)
+          this.$cookie.set('company',this.user.company)
+          this.$cookie.set('city',this.user.city)
+          // console.log('user login:')
+          // console.log(this.user)
           /**
            *  user type : admin / owner
            */

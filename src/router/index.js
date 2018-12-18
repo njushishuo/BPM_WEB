@@ -9,8 +9,7 @@ import AddQuestion from '@/pages/manage/addQuestion'
 import ProjectList from '@/pages/manage/projectList'
 
 import MyProjectList from '@/pages/owner/myProjectList'
-import MyTemplateList from '@/pages/owner/myTemplateList'
-import MyPaperList from '@/pages/owner/myPaperList'
+import ProjectDetail from '@/pages/owner/projectDetail'
 import AddProject from '@/pages/owner/addProject'
 
 
@@ -54,20 +53,15 @@ export default new Router({
       component: HomeRecruit,
       children:[
         {
-          path:'/my' +
-            'ProjectList',
+          path:'/myProjectList',
           component:MyProjectList,
           meta:['数据管理','我的项目']
         },
         {
-          path:'/myTemplateList',
-          component:MyTemplateList,
-          meta:['数据管理','我的模板']
-        },
-        {
-          path:'/myPaperList',
-          component:MyPaperList,
-          meta:['数据管理','我的试卷']
+          path:'/projectDetail/:project_id',
+          name:'ProjectDetail',
+          component:ProjectDetail,
+          meta:['数据管理','项目详情']
         },
         {
           path:'/addProject',

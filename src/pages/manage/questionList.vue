@@ -167,6 +167,8 @@
 
       },
 
+
+
       async handleDelete(index , row){
         console.log(row)
         try{

@@ -6,23 +6,19 @@
         highlight-current-row
         style="width: 100%">
         <el-table-column
-          type="index"
-          width="100">
+          type="index">
         </el-table-column>
         <el-table-column
           property="recruit_name"
-          label="项目名"
-          width="220">
+          label="项目名">
         </el-table-column>
         <el-table-column
           property="recruit_desc"
-          label="项目描述"
-          width="300">
+          label="项目描述">
         </el-table-column>
         <el-table-column
           property="recruit_type"
-          label="项目类型"
-          width="220">
+          label="项目类型">
         </el-table-column>
         <el-table-column
           property="owner_nickname"

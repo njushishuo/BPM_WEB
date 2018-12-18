@@ -1,10 +1,10 @@
 <template>
-
+    <p>project detail</p>
 </template>
 
 <script>
   export default {
-    name: 'myPaperList'
+    name: 'ProjectDetail'
   }
 </script>
 

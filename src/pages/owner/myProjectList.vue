@@ -6,27 +6,33 @@
         highlight-current-row
         style="width: 100%">
         <el-table-column
-          type="index"
-          width="100">
+          type="index">
         </el-table-column>
         <el-table-column
           property="recruit_name"
-          label="项目名"
-          width="220">
+          label="项目名">
         </el-table-column>
         <el-table-column
           property="recruit_desc"
-          label="项目描述"
-          width="300">
+          label="项目描述">
         </el-table-column>
         <el-table-column
           property="recruit_type"
-          label="项目类型"
-          width="220">
+          label="项目类型">
         </el-table-column>
-        <el-table-column
-          property="owner_nickname"
-          label="项目发布人">
+        <el-table-column label="操作" >
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="showDetail(scope.$index,scope.row)">查看
+            </el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index,scope.row)">删除
+            </el-button>
+          </template>
         </el-table-column>
       </el-table>
       <div class="Pagination" style="text-align: left;margin-top: 10px;">
@@ -74,7 +80,9 @@
       },
 
       getProjects(){
-        ProjectService.getProjectListByUserId(this.$cookie.get('loginUser').id).then((res)=>{
+        ProjectService.getProjectListByUserId(this.$cookie.get('userId')).then((res)=>{
+          console.log(res);
+
           this.tableData = res.data.Recruit;
           // console.log("tableData:/n");
           // console.log(this.tableData);
@@ -88,8 +96,37 @@
           // console.log("showData:/n");
           // console.log(this.showData);
         });
-      }
-    },
+      },
+
+      showDetail(index , row){
+        var projectId = this.showData[index].id;
+        this.$router.push({name:'ProjectDetail', params:{project_id : projectId}} );
+      },
+
+      async handleDelete(index , row){
+        // console.log(row)
+        // try{
+        //   const res = await QuestionService.deleteQuestion(row.id);
+        //   if (res.status == 200) {
+        //     this.$message({
+        //       type: 'success',
+        //       message: '删除成功'
+        //     });
+        //
+        //     var i = index + (this.currentPage-1)*this.limit;
+        //     this.tableData.splice(i, 1);
+        //     this.showData.splice(index,1);
+        //   }else{
+        //     throw new Error(res.message)
+        //   }
+        // }catch(err){
+        //   this.$message({
+        //     type: 'error',
+        //     message: err.message
+        //   });
+        //   console.log('删除失败')
+        }
+    }
   }
 </script>
 

@@ -7,17 +7,16 @@
         style="width: 100%">
         <el-table-column
           type="index"
-          width="100">
+        >
         </el-table-column>
         <el-table-column
           property="username"
           label="用户名"
-          width="220">
+         >
         </el-table-column>
         <el-table-column
           property="nickname"
-          label="用户昵称"
-          width="220">
+          label="用户昵称">
         </el-table-column>
         <el-table-column
           property="company"

@@ -6,8 +6,8 @@
         <el-form :model="questionForm" :rules="questionRules" ref="foodForm" label-width="110px" class="form food_form">
 
           <el-form-item label="试题类型">
-            <el-radio class="radio" v-model="questionForm.questionType" label="ESSAY">论述题</el-radio>
-            <el-radio class="radio" v-model="questionForm.questionType" label="MULTIPLE_CHOICE">选择题</el-radio>
+            <el-radio class="radio" v-model="questionForm.projectType" label="ESSAY">论述题</el-radio>
+            <el-radio class="radio" v-model="questionForm.projectType" label="MULTIPLE_CHOICE">选择题</el-radio>
           </el-form-item>
 
           <el-form-item label="试题标签">
@@ -25,9 +25,9 @@
             <el-input v-model="questionForm.description"></el-input>
           </el-form-item>
 
-          <el-row v-if="questionForm.questionType == 'ESSAY'">
+          <el-row v-if="questionForm.projectType == 'ESSAY'">
             <el-form-item label="试题答案" prop="essayAnswer">
-              <el-input v-model="questionForm.essayAnswer"></el-input>
+              <el-input v-model="questionForm.name"></el-input>
             </el-form-item>
           </el-row>
 
@@ -66,25 +66,27 @@
 </template>
 
 <script>
+
   import QuestionService from '../../services/questionService'
+  import LabelService from '../../services/labelService'
   import UtilService from '../../services/util'
 
   export default {
     name: 'addQuestion',
     data () {
       return {
-        questionForm: {
-          questionType: 'ESSAY',
+        projectForm: {
+          projectType: 'ESSAY',
           description: '',
           selectedLabels: [],
-          essayAnswer: '',
+          name: '',
           choices: [],
           choiceAnswer: '',
           choiceEdit: '',
           charChoices: [],
 
         },
-        questionRules: {
+        projectRules: {
           description: [
             {required: true, message: '请输入试题描述', trigger: 'blur'},
           ],
@@ -100,40 +102,40 @@
     methods: {
 
       async getLabels () {
-        var res = await QuestionService.getLabelList()
+        var res = await LabelService.getLabelList()
         this.labels = res.data.Label
       },
 
       addChoice () {
-        this.questionForm.choices.push(this.questionForm.choiceEdit)
-        var charCode = this.questionForm.choices.length - 1 + UtilService.charCodeOfA
-        this.questionForm.charChoices.push(
-          {key: this.questionForm.choices.length - 1, value: String.fromCharCode(charCode)})
+        this.projectForm.choices.push(this.projectForm.choiceEdit)
+        var charCode = this.projectForm.choices.length - 1 + UtilService.charCodeOfA
+        this.projectForm.charChoices.push(
+          {key: this.projectForm.choices.length - 1, value: String.fromCharCode(charCode)})
 
-        this.questionForm.choiceEdit = ''
+        this.projectForm.choiceEdit = ''
       },
 
       deleteChoice () {
-        var index = this.questionForm.choices.length - 1
-        this.questionForm.choices.splice(index, 1)
-        this.questionForm.charChoices.splice(index, 1)
+        var index = this.projectForm.choices.length - 1
+        this.projectForm.choices.splice(index, 1)
+        this.projectForm.charChoices.splice(index, 1)
       },
 
       addQuestion () {
 
         var labelsString = ''
-        this.questionForm.selectedLabels.map(
+        this.projectForm.selectedLabels.map(
           (item) => {
             labelsString += item + ';'
           }
         )
         labelsString = labelsString.substring(0,labelsString.length-1);
 
-        if (this.questionForm.questionType == 'ESSAY') {
+        if (this.projectForm.projectType == 'ESSAY') {
           var question = {
             question_type: 'ESSAY',
-            question_desc: this.questionForm.description,
-            answer: this.questionForm.essayAnswer,
+            question_desc: this.projectForm.description,
+            answer: this.projectForm.name,
             labels: labelsString
           }
           QuestionService.addQuestion(question).then((res) => {
@@ -143,23 +145,23 @@
                 type: 'success',
                 message: '添加成功'
               })
-              this.questionForm.description = '',
-              this.questionForm.selectedLabels = [],
-              this.questionForm.essayAnswer = ''
+              this.projectForm.description = '',
+              this.projectForm.selectedLabels = [],
+              this.projectForm.name = ''
             }
           })
         }else{
 
           var answerString = '';
-          this.questionForm.choices.map((item)=>{
+          this.projectForm.choices.map((item)=>{
             answerString+=item+';'
           })
           answerString = answerString.substring(0,answerString.length-1);
-          answerString += ';'+this.questionForm.choiceAnswer;
+          answerString += ';'+this.projectForm.choiceAnswer;
 
           var question = {
             question_type: 'MULTIPLE_CHOICE',
-            question_desc: this.questionForm.description,
+            question_desc: this.projectForm.description,
             answer: answerString,
             labels: labelsString
           }
@@ -170,12 +172,12 @@
                 type: 'success',
                 message: '添加成功'
               })
-              this.questionForm.description = '',
-              this.questionForm.selectedLabels = [],
-              this.questionForm.choices = [],
-              this.questionForm.choiceAnswer = '',
-              this.questionForm.choiceEdit = '',
-              this.questionForm.charChoices = []
+              this.projectForm.description = '',
+              this.projectForm.selectedLabels = [],
+              this.projectForm.choices = [],
+              this.projectForm.choiceAnswer = '',
+              this.projectForm.choiceEdit = '',
+              this.projectForm.charChoices = []
             }
           })
         }
