@@ -101,7 +101,7 @@
           var res = await LabelService.getLabelList()
           var tempData = res.data.Label
           tempData.map((obj) => {
-            this.labelMap.set(obj.id + '', obj)
+            this.labelMap.set(obj.id, obj)
           })
         }
 

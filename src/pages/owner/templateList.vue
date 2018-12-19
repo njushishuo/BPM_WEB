@@ -16,7 +16,7 @@
             </el-col>
           </el-row>
         </div>
-        <el-button type="text primary" @click="createPaper(template.id)">导出试卷</el-button>
+        <el-button type="text primary" @click="createPaper(index)">导出试卷</el-button>
       </el-card>
     </el-col>
   </el-row>
@@ -26,14 +26,22 @@
 
 <script>
   import TemplateService from '../../services/templateService'
+  import QuestionService from '../../services/questionService'
+  import PaperService from '../../services/paperService'
+
   import LabelService from '../../services/labelService'
 
   export default {
     name: 'TemplateList',
     data () {
       return {
+        // id - label_name
         labelMap: new Map(),
+        labelLevelMap: new Map(),
+        questionMap: new Map(),
+        rawQuestions:[],
         rawTemplates:[],
+        rawLabels:[],
         processedTemplates: [],
         count: 0,
       }
@@ -48,10 +56,19 @@
         if (this.labelMap.size == 0) {
           var res = await LabelService.getLabelList()
           var tempData = res.data.Label
+          // console.log("get labels")
+          // console.log(tempData)
+          this.rawLabels = tempData;
           tempData.map((obj) => {
-            this.labelMap.set(obj.id + '', obj)
+            if(obj.parent_id == "0"){
+              obj.level = 1;
+            }else{
+              obj.level = 2;
+            }
+            this.labelMap.set(obj.id, obj)
           })
         }
+
         // console.log("projectId:"+this.$route.params.project_id);
         res = await TemplateService.getTemplatesByProjectId(this.$route.params.project_id)
         // console.log(res)
@@ -60,6 +77,7 @@
         // console.log(tempData)
         this.count = tempData.length
         this.rawTemplates = tempData
+
         tempData.map((obj) => {
           var templateItems = []
 
@@ -94,9 +112,35 @@
         })
       },
 
-      createPaper(templateId){
-        console.log(templateId);
+      async createPaper(index){
+
+         // console.log(index);
+         // console.log(this.rawTemplates);
+        if (this.questionMap.size == 0) {
+          var res = await QuestionService.getQuestionList();
+          this.questionList = res.data.Question
+          this.questionList.map((obj) => {
+            this.questionMap.set(obj.id, obj)
+          })
+        }
+
+        if(this.labelLevelMap.size == 0){
+          for(var i=0; i<this.rawLabels.length ; i++ ){
+            if(this.rawLabels[i].parent_id == "0"){
+              this.labelLevelMap.set(this.rawLabels[i].id , []);
+            }
+          }
+
+          for(var i=0; i<this.rawLabels.length ; i++ ){
+            if(this.rawLabels[i].parent_id != "0"){
+              this.labelLevelMap.get(parseInt(this.rawLabels[i].parent_id)).push(this.rawLabels[i].id);
+            }
+          }
+        }
+
+        var paper = PaperService.createdPaperBy(this.rawTemplates[index],this.labelMap,this.questionMap, this.questionList , this.labelLevelMap);
       }
+
     }
   }
 </script>

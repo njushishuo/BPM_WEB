@@ -17,7 +17,7 @@ export default {
     }
 
     labelIds.map((obj) => {
-      labelNames.push(labelMap.get(obj).label_name)
+      labelNames.push(labelMap.get(parseInt(obj)).label_name)
     })
 
     return labelNames
@@ -34,7 +34,7 @@ export default {
     }
 
     labelIds.map((obj) => {
-      labelNames.push(labelMap.get(obj).label_name)
+      labelNames.push(labelMap.get(parseInt(obj)).label_name)
     })
 
     return labelNames
