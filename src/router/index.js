@@ -10,7 +10,10 @@ import ProjectList from '@/pages/manage/projectList'
 
 import MyProjectList from '@/pages/owner/myProjectList'
 import ProjectDetail from '@/pages/owner/projectDetail'
+import TemplateList from '@/pages/owner/templateList'
+import PaperList from '@/pages/owner/paperList'
 import AddProject from '@/pages/owner/addProject'
+
 
 
 Vue.use(Router)
@@ -66,6 +69,18 @@ export default new Router({
           path:'/projectDetail/:project_id',
           name:'ProjectDetail',
           component:ProjectDetail,
+          meta:['数据管理','项目详情']
+        },
+        {
+          path:'/project/:project_id/templateList',
+          name:'TemplateList',
+          component:TemplateList,
+          meta:['数据管理','模板管理']
+        },
+        {
+          path:'/project/:project_id/paperList',
+          name:'PaperList',
+          component:PaperList,
           meta:['数据管理','项目详情']
         },
         {

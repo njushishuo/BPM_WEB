@@ -22,11 +22,16 @@
         </el-table-column>
         <el-table-column label="操作" >
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="showDetail(scope.$index,scope.row)">查看
-            </el-button>
+            <el-dropdown>
+              <el-button  size="mini" type="primary" @click="handleClick" >
+                编辑<i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>项目</el-dropdown-item>
+                <el-dropdown-item>模板</el-dropdown-item>
+                <el-dropdown-item>试卷</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
             <el-button
               size="mini"
               type="danger"
@@ -103,6 +108,16 @@
         this.$router.push({name:'ProjectDetail', params:{project_id : projectId}} );
       },
 
+      manageTempalte(index, row){
+        var projectId = this.showData[index].id;
+        this.$router.push({name:'TemplateList', params:{project_id : projectId}} );
+      },
+
+      managePaper(index, row){
+        var projectId = this.showData[index].id;
+        this.$router.push({name:'PaperList', params:{project_id : projectId}} );
+      },
+
       async handleDelete(index , row){
         // console.log(row)
         // try{
@@ -132,4 +147,8 @@
 
 <style scoped>
 
+  .el-button--mini {
+    padding: 7px 10px;
+    width: 60px;
+  }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-active="defaultActive" style="min-height: 100%;" theme="dark" @select="handleSelect">
+  <el-menu  @select="handleSelect" style="min-height: 100%;"  theme="dark">
     <el-submenu index="1">
       <template slot="title"><i class="el-icon-document"></i>数据管理</template>
       <el-menu-item index="myProjectList">我的项目</el-menu-item>
