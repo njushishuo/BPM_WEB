@@ -1,51 +1,43 @@
 <template>
   <div>
     <el-row style="margin-top: 20px;">
-      <el-col :span="14" :offset="4">
-        <header class="form_header">添加项目</header>
-        <el-form :model="projectForm" :rules="projectRules" ref="foodForm" label-width="110px" class="form food_form">
+      <el-col :span="12" :offset="6">
 
-          <el-form-item label="项目类型">
-            <el-radio class="radio" v-model="projectForm.projectType" label="WEB">WEB 开发</el-radio>
-            <el-radio class="radio" v-model="projectForm.projectType" label="APP">APP 开发</el-radio>
-            <el-radio class="radio" v-model="projectForm.projectType" label="WE_CHAT_APPLET">微信小程序</el-radio>
-          </el-form-item>
+        <el-card>
+          <div slot="header" >
+            <header class="form_header">添加项目</header>
+          </div>
+          <div >
+            <el-form :model="projectForm" :rules="projectRules" ref="foodForm" label-width="110px" >
 
-          <el-form-item label="项目标签">
-            <el-select v-model="projectForm.selectedLabels" multiple placeholder="请选择">
-              <el-option
-                v-for="item in labels"
-                :key="item.id"
-                :label="item.label_name"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>
+              <el-form-item label="项目类型">
+                <el-radio class="radio" v-model="projectForm.projectType" label="WEB">WEB 开发</el-radio>
+                <el-radio class="radio" v-model="projectForm.projectType" label="APP">APP 开发</el-radio>
+                <el-radio class="radio" v-model="projectForm.projectType" label="WE_CHAT_APPLET">微信小程序</el-radio>
+              </el-form-item>
 
-          <el-form-item label="项目名称" prop="name">
-            <el-input v-model="projectForm.name"></el-input>
-          </el-form-item>
+              <el-form-item label="项目名称" prop="name">
+                <el-input v-model="projectForm.name"></el-input>
+              </el-form-item>
 
-          <el-form-item label="项目描述" prop="description">
-            <el-input type="textarea" v-model="projectForm.description"></el-input>
-          </el-form-item>
+              <el-form-item label="项目描述" prop="description">
+                <el-input type="textarea" v-model="projectForm.description"></el-input>
+              </el-form-item>
 
-          <el-form-item>
-            <el-button type="primary" @click="addProject()">确认</el-button>
-          </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="addProject()">确认</el-button>
+              </el-form-item>
 
-        </el-form>
-
+            </el-form>
+          </div>
+        </el-card>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-
   import ProjectService from '../../services/projectService';
-  import LabelService from '../../services/labelService';
-
   export default {
     name: 'addProject',
     data () {
@@ -63,22 +55,12 @@
           description: [
             {required: true, message: '请输入项目描述', trigger: 'blur'},
           ],
-        },
-
-        labels: [],
+        }
       }
     },
 
-    created () {
-      this.getLabels()
-    },
 
     methods: {
-
-      async getLabels () {
-        var res = await LabelService.getLabelList()
-        this.labels = res.data.Label
-      },
 
       addProject(){
 
@@ -120,26 +102,6 @@
 <style lang="less" scoped>
   @import '../../style/mixin';
 
-  .form {
-    min-width: 400px;
-    margin-bottom: 30px;
-
-    &:hover {
-      box-shadow: 0 0 8px 0 rgba(232, 237, 250, .6), 0 2px 4px 0 rgba(232, 237, 250, .5);
-      border-radius: 6px;
-      transition: all 400ms;
-    }
-  }
-
-  .food_form {
-    border: 1px solid #eaeefb;
-    padding: 10px 10px 0;
-  }
-
-  .form_header {
-    text-align: center;
-    margin-bottom: 10px;
-  }
 
   .category_select {
     border: 1px solid #eaeefb;
