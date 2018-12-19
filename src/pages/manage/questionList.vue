@@ -81,8 +81,6 @@
       this.getQuestions()
     },
 
-
-
     methods: {
       handleCurrentChange (val) {
         this.currentPage = val
@@ -94,10 +92,10 @@
         }
       },
       async getQuestions () {
-        this.showData= [];
-        this.tableData = [] ;
+        this.showData = []
+        this.tableData = []
 
-        if(this.labelMap.size == 0){
+        if (this.labelMap.size == 0) {
           var res = await LabelService.getLabelList()
           var tempData = res.data.Label
           tempData.map((obj) => {
@@ -110,36 +108,7 @@
         // console.log('questions:/n')
         // console.log(tempData)
         this.count = tempData.length
-        tempData.map((obj) => {
-
-          var question_type = UtilService.question_type_map.get(obj.question_type)
-          var labelNames = LabelService.getLabelNamesByQuestionLabels(obj.labels , this.labelMap)
-
-          if (obj.question_type == 'ESSAY') {
-            this.tableData.push({
-              id: obj.id,
-              quesDesc: obj.question_desc,
-              quesType: question_type,
-              label: labelNames,
-              answer: obj.answer
-            })
-          }
-
-          if (obj.question_type == 'MULTIPLE_CHOICE') {
-            var options = obj.answer.split(';')
-            var charCode = UtilService.charCodeOfA + parseInt(options[options.length - 1])
-            var answer = String.fromCharCode(charCode)
-            options.splice(options.length - 1, 1)
-            this.tableData.push({
-              id: obj.id,
-              quesDesc: obj.question_desc,
-              quesType: question_type,
-              label: labelNames,
-              option: options,
-              answer: answer
-            })
-          }
-        })
+        QuestionService.processQuestionList(tempData, this.tableData , this.labelMap)
 
         for (var i = 0; i < this.limit && i < this.count; i++) {
           this.showData[i] = this.tableData[i]
@@ -150,29 +119,28 @@
 
       },
 
-
-
-      async handleDelete(index , row){
+      async handleDelete (index, row) {
         console.log(row)
-        try{
-          const res = await QuestionService.deleteQuestion(row.id);
+        try {
+          const res = await QuestionService.deleteQuestion(row.id)
           if (res.status == 200) {
             this.$message({
               type: 'success',
               message: '删除成功'
-            });
+            })
 
-            var i = index + (this.currentPage-1)*this.limit;
-            this.tableData.splice(i, 1);
-            this.showData.splice(index,1);
-          }else{
+            var i = index + (this.currentPage - 1) * this.limit
+            this.tableData.splice(i, 1)
+            this.showData.splice(index, 1)
+            this.count--
+          } else {
             throw new Error(res.message)
           }
-        }catch(err){
+        } catch (err) {
           this.$message({
             type: 'error',
             message: err.message
-          });
+          })
           console.log('删除失败')
         }
       }

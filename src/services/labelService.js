@@ -23,20 +23,4 @@ export default {
     return labelNames
   },
 
-
-  getLabelNamesByTemplateLabels (ids,labelMap) {
-    var labelIds = []
-    var labelNames = []
-    if (ids.lastIndexOf(',') != -1) {
-      labelIds = ids.split(',')
-    } else {
-      labelIds[0] = ids
-    }
-
-    labelIds.map((obj) => {
-      labelNames.push(labelMap.get(parseInt(obj)).label_name)
-    })
-
-    return labelNames
-  }
 }

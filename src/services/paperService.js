@@ -41,8 +41,8 @@ export default {
       templateItems = template.items.split(';')
     }
 
-    console.log(labelMap)
-    console.log(labelLevelMap)
+    // console.log(labelMap)
+    // console.log(labelLevelMap)
 
     var bestMatchScore = 5
 
@@ -51,12 +51,12 @@ export default {
       var templateItem = templateItems[i]
       var index = templateItem.lastIndexOf(',')
       var labelIdString = templateItem.substring(0, index)
-      console.log("tempLabel:"+labelIdString)
+      // console.log("tempLabel:"+labelIdString)
       var tempLabelId = parseInt(labelIdString)
       var count = templateItem.substring(index + 1, templateItem.length)
       var tempList = []
       for (var j = 0; j < questionList.length; j++) {
-        console.log(questionList[j].labels)
+        // console.log(questionList[j].labels)
         var score = 0
         var tempLabel = labelMap.get(tempLabelId)
 
@@ -72,9 +72,9 @@ export default {
           score: score
         })
       }
-      console.log(tempList)
+      // console.log(tempList)
       tempList.sort(sortByScore)
-      console.log(tempList)
+      // console.log(tempList)
 
       var tempCnt = 0
       for (var k = 0; k < tempList.length; k++) {
