@@ -22,14 +22,14 @@
         </el-table-column>
         <el-table-column label="操作" >
           <template slot-scope="scope">
-            <el-dropdown>
-              <el-button  size="mini" type="primary" @click="handleClick" >
+            <el-dropdown trigger="click"   @command="handleSelect" >
+              <el-button  size="mini" type="primary" @click="handleClick(scope.$index)">
                 编辑<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>项目</el-dropdown-item>
-                <el-dropdown-item>模板</el-dropdown-item>
-                <el-dropdown-item>试卷</el-dropdown-item>
+              <el-dropdown-menu slot="dropdown" id="editDrop">
+                <el-dropdown-item command="project">项目</el-dropdown-item>
+                <el-dropdown-item command= "template">模板</el-dropdown-item>
+                <el-dropdown-item command= "paper">试卷</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
             <el-button
@@ -66,7 +66,8 @@
         showData:[],
         limit: UtilService.limit,
         count: 0,
-        currentPage: 1
+        currentPage: 1,
+        clickIndex : 'project'
       }
     },
     created(){
@@ -103,20 +104,23 @@
         });
       },
 
-      showDetail(index , row){
-        var projectId = this.showData[index].id;
-        this.$router.push({name:'ProjectDetail', params:{project_id : projectId}} );
+      handleClick(index){
+        this.clickIndex = index;
       },
 
-      manageTempalte(index, row){
-        var projectId = this.showData[index].id;
-        this.$router.push({name:'TemplateList', params:{project_id : projectId}} );
+      handleSelect(command){
+        console.log(command, this.clickIndex)
+        var projectId = this.showData[this.clickIndex].id;
+
+        if(command == 'project' ){
+          this.$router.push({name:'ProjectDetail', params:{project_id : projectId}} );
+        }else if ( command == 'template'){
+          this.$router.push({name:'TemplateList', params:{project_id : projectId}} );
+        }else if(command == 'paper'){
+          this.$router.push({name:'PaperList', params:{project_id : projectId}} );
+        }
       },
 
-      managePaper(index, row){
-        var projectId = this.showData[index].id;
-        this.$router.push({name:'PaperList', params:{project_id : projectId}} );
-      },
 
       async handleDelete(index , row){
         // console.log(row)
