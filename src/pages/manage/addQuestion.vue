@@ -22,7 +22,7 @@
           </el-form-item>
 
           <el-form-item label="试题描述" prop="description">
-            <el-input v-model="questionForm.description"></el-input>
+            <el-input  type="textarea" v-model="questionForm.description"></el-input>
           </el-form-item>
 
           <el-row v-if="questionForm.questionType == 'ESSAY'">

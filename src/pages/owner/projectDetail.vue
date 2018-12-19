@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="14" offset="4">
+      <el-col :span="14" :offset="4">
         <el-card class="box-card">
           <el-form   :model="projectForm" ref="foodForm" label-width="110px" class="form food_form">
 
@@ -22,14 +22,14 @@
 
             <el-form-item  label="项目名称:" prop="name">
               <span>{{projectForm.name}}</span>
-              <el-input disabled="true" v-model="projectForm.name"></el-input>
+              <el-input :disabled="true" v-model="projectForm.name"></el-input>
             </el-form-item>
 
             <el-form-item label="项目描述:" prop="description">
               <p>
                 {{projectForm.description}}
               </p>
-              <el-input disabled="true" type="textarea" v-model="projectForm.description"></el-input>
+              <el-input :disabled="true" type="textarea" v-model="projectForm.description"></el-input>
             </el-form-item>
           </el-form>
 

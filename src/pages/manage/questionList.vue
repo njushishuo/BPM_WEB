@@ -93,23 +93,6 @@
           this.showData[j] = this.tableData[i]
         }
       },
-
-      getLabelNamesByLabelIdsString (ids) {
-        var labelIds = []
-        var labelNames = []
-        if (ids.lastIndexOf(';') != -1) {
-          labelIds = ids.split(';')
-        } else {
-          labelIds[0] = ids
-        }
-
-        labelIds.map((obj) => {
-          labelNames.push(this.labelMap.get(obj))
-        })
-
-        return labelNames
-      },
-
       async getQuestions () {
         this.showData= [];
         this.tableData = [] ;
@@ -118,7 +101,7 @@
           var res = await LabelService.getLabelList()
           var tempData = res.data.Label
           tempData.map((obj) => {
-            this.labelMap.set(obj.id + '', obj.label_name)
+            this.labelMap.set(obj.id + '', obj)
           })
         }
 
@@ -130,7 +113,7 @@
         tempData.map((obj) => {
 
           var question_type = UtilService.question_type_map.get(obj.question_type)
-          var labelNames = this.getLabelNamesByLabelIdsString(obj.labels)
+          var labelNames = LabelService.getLabelNamesByQuestionLabels(obj.labels , this.labelMap)
 
           if (obj.question_type == 'ESSAY') {
             this.tableData.push({
@@ -158,14 +141,12 @@
           }
         })
 
-
         for (var i = 0; i < this.limit && i < this.count; i++) {
           this.showData[i] = this.tableData[i]
         }
         // console.log('showData:/n')
         // console.log(this.showData)
-
-        console.log("fetch data complete")
+        // console.log("fetch data complete")
 
       },
 
