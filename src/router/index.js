@@ -28,21 +28,25 @@ export default new Router({
       children:[
         {
           path:'/userList',
+          name:'UserList',
           component:UserList,
           meta:['数据管理','用户列表']
         },
         {
           path:'/projectList',
+          name:'ProjectList',
           component:ProjectList,
           meta:['数据管理','项目列表']
         },
         {
           path:'/questionList',
+          name:'QuestionList',
           component:QuestionList,
           meta:['数据管理','试题列表']
         },
         {
           path:'/addQuestion',
+          name:'AddQuestion',
           component:AddQuestion,
           meta:['添加数据','添加试题']
         }
@@ -54,6 +58,7 @@ export default new Router({
       children:[
         {
           path:'/myProjectList',
+          name:'MyProjectList',
           component:MyProjectList,
           meta:['数据管理','我的项目']
         },
@@ -65,6 +70,7 @@ export default new Router({
         },
         {
           path:'/addProject',
+          name:'AddProject',
           component:AddProject,
           meta:['添加数据','添加项目']
         }

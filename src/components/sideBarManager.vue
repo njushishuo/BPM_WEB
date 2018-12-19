@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-active="defaultActive" style="min-height: 100%;" theme="dark" router>
+  <el-menu :default-active="defaultActive" style="min-height: 100%;" theme="dark" @select="handleSelect">
     <el-submenu index="2">
       <template slot="title"><i class="el-icon-document"></i>数据管理</template>
       <el-menu-item index="userList">用户列表</el-menu-item>
@@ -19,11 +19,25 @@
 
 <script>
   export default {
-    computed: {
-      defaultActive: function () {
-        return this.$route.path.replace('/', '')
+
+    methods:{
+      handleSelect (index) {
+        console.log('当前选中了index: ' + index)
+        if (index === 'userList') {
+          this.$router.push({name: 'UserList'})
+        }
+        if (index === 'projectList') {
+          this.$router.push({name: 'ProjectList'})
+        }
+        if (index === 'questionList') {
+          this.$router.push({name: 'QuestionList'})
+        }
+
+        if (index === 'addQuestion'){
+          this.$router.push({name: 'AddQuestion'})
+        }
       }
-    },
+    }
   }
 </script>
 

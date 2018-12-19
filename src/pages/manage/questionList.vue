@@ -59,7 +59,9 @@
 </template>
 
 <script>
+
   import QuestionService from '../../services/questionService'
+  import LabelService from '../../services/labelService'
   import UtilService from '../../services/util'
 
   export default {
@@ -113,7 +115,7 @@
         this.tableData = [] ;
 
         if(this.labelMap.size == 0){
-          var res = await QuestionService.getLabelList()
+          var res = await LabelService.getLabelList()
           var tempData = res.data.Label
           tempData.map((obj) => {
             this.labelMap.set(obj.id + '', obj.label_name)
