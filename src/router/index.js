@@ -14,6 +14,7 @@ import PaperDetail from '@/pages/owner/paperDetail'
 import TemplateList from '@/pages/owner/templateList'
 import PaperList from '@/pages/owner/paperList'
 import AddProject from '@/pages/owner/addProject'
+import AddTemplate from '@/pages/owner/addTemplate'
 
 
 
@@ -95,6 +96,12 @@ export default new Router({
           name:'AddProject',
           component:AddProject,
           meta:['添加数据','添加项目']
+        },
+        {
+          path:'/project/:project_id/addTemplate',
+          name:'AddTemplate',
+          component:AddTemplate,
+          meta:['添加数据','添加模板']
         }
       ]},
 

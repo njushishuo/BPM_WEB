@@ -9,4 +9,8 @@ export default {
   deleteTemplate(id){
     return Axios.delete('/Template/'+id)
   },
+
+  addTemplate(template){
+    return Axios.post('/Template',template)
+  }
 }

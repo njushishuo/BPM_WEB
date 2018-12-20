@@ -20,7 +20,7 @@
       <el-table-column label="项目类型" prop="projectType"></el-table-column>
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="addTemplate(scope.$index)">添加</el-button>
+          <el-button type="primary" size="mini" @click="addTemplate()">添加</el-button>
           <el-button type="danger" size="mini" @click="deleteTemplate(scope.$index , scope.row)">删除</el-button>
           <el-button type="success" size="mini" @click="createPaper(scope.$index)">导出试卷</el-button>
         </template>
@@ -224,8 +224,8 @@
         this.dialogVisible = true
       },
 
-      addTemplate (index) {
-
+      addTemplate () {
+        this.$router.push({name:'AddTemplate' , params: { project_id: this.project.id }});
       },
 
       async deleteTemplate (index, row) {

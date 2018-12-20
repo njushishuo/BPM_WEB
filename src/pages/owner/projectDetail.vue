@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row style="margin-top: 20px;">
-      <el-col :span="12" :offset="4">
+      <el-col :span="12" :offset="6">
         <el-card class="box-card">
           <el-form   :model="projectForm" ref="foodForm" label-width="110px" class="form food_form">
             <el-form-item  label="项目类型:">
@@ -43,7 +43,6 @@
 
 <style scoped>
   .box-card {
-    width: 950px;
     border: 2px solid transparent;
     margin: 10px;
   }

@@ -22,7 +22,7 @@
           </el-form-item>
 
           <el-form-item label="试题描述" prop="description">
-            <el-input  type="textarea" v-model="questionForm.description"></el-input>
+            <el-input type="textarea" v-model="questionForm.description"></el-input>
           </el-form-item>
 
           <el-row v-if="questionForm.questionType == 'ESSAY'">
@@ -54,9 +54,9 @@
             </el-form-item>
 
           </el-row>
-          <el-form-item>
+          <div align="center">
             <el-button type="primary" @click="addQuestion()">确认</el-button>
-          </el-form-item>
+          </div>
 
         </el-form>
 
@@ -129,7 +129,7 @@
             labelsString += item + ';'
           }
         )
-        labelsString = labelsString.substring(0,labelsString.length-1);
+        labelsString = labelsString.substring(0, labelsString.length - 1)
 
         if (this.questionForm.questionType == 'ESSAY') {
           var question = {
@@ -146,18 +146,18 @@
                 message: '添加成功'
               })
               this.questionForm.description = '',
-              this.questionForm.selectedLabels = [],
-              this.questionForm.essayAnswer = ''
+                this.questionForm.selectedLabels = [],
+                this.questionForm.essayAnswer = ''
             }
           })
-        }else{
+        } else {
 
-          var answerString = '';
-          this.questionForm.choices.map((item)=>{
-            answerString+=item+';'
+          var answerString = ''
+          this.questionForm.choices.map((item) => {
+            answerString += item + ';'
           })
-          answerString = answerString.substring(0,answerString.length-1);
-          answerString += ';'+this.questionForm.choiceAnswer;
+          answerString = answerString.substring(0, answerString.length - 1)
+          answerString += ';' + this.questionForm.choiceAnswer
 
           var question = {
             question_type: 'MULTIPLE_CHOICE',
@@ -165,7 +165,6 @@
             answer: answerString,
             labels: labelsString
           }
-
 
           QuestionService.addQuestion(question).then((res) => {
             // console.log(res)
@@ -175,11 +174,11 @@
                 message: '添加成功'
               })
               this.questionForm.description = '',
-              this.questionForm.selectedLabels = [],
-              this.questionForm.choices = [],
-              this.questionForm.choiceAnswer = '',
-              this.questionForm.choiceEdit = '',
-              this.questionForm.charChoices = []
+                this.questionForm.selectedLabels = [],
+                this.questionForm.choices = [],
+                this.questionForm.choiceAnswer = '',
+                this.questionForm.choiceEdit = '',
+                this.questionForm.charChoices = []
             }
           })
         }

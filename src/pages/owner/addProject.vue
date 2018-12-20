@@ -2,13 +2,12 @@
   <div>
     <el-row style="margin-top: 20px;">
       <el-col :span="12" :offset="6">
-
         <el-card>
           <div slot="header" >
             <header class="form_header">添加项目</header>
           </div>
           <div >
-            <el-form :model="projectForm" :rules="projectRules" ref="foodForm" label-width="110px" >
+            <el-form :model="projectForm" :rules="projectRules" ref="foodForm" label-width="110px"  >
 
               <el-form-item label="项目类型">
                 <el-radio class="radio" v-model="projectForm.projectType" label="WEB">WEB 开发</el-radio>
@@ -24,9 +23,10 @@
                 <el-input type="textarea" v-model="projectForm.description"></el-input>
               </el-form-item>
 
-              <el-form-item>
+              <div align="center">
                 <el-button type="primary" @click="addProject()">确认</el-button>
-              </el-form-item>
+              </div>
+
 
             </el-form>
           </div>

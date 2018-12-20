@@ -1,30 +1,14 @@
 <template>
   <div class="fillcontent">
-    <el-table
-      :data="this.showData"
-      highlight-current-row
-      style="width: 100%">
-      <el-table-column
-        type="index"
-      >
+    <el-table :data="this.showData" highlight-current-row style="width: 100%">
+      <el-table-column type="index">
       </el-table-column>
-      <el-table-column
-        property="username"
-        label="用户名"
-      >
+      <el-table-column property="username" label="用户名">
       </el-table-column>
-      <el-table-column
-        property="nickname"
-        label="用户昵称">
+      <el-table-column property="nickname" label="用户昵称"></el-table-column>
+      <el-table-column property="company" label="公司名称">
       </el-table-column>
-      <el-table-column
-        property="company"
-        label="公司名称">
-      </el-table-column>
-      <el-table-column
-        property="city"
-        label="所在城市">
-      </el-table-column>
+      <el-table-column property="city" label="所在城市"></el-table-column>
     </el-table>
     <div class="Pagination" style="text-align: left;margin-top: 10px;">
       <el-pagination
