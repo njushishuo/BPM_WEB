@@ -3,7 +3,7 @@
     <el-table
       :data="showData"
       highlight-current-row
-      style="width: 100%">
+      style="width: 100%" :row-style="{ height: '60px'}" >
       <el-table-column
         type="index">
       </el-table-column>

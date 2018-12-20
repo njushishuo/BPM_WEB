@@ -2,7 +2,7 @@
   <div class="fillcontent">
     <el-table
       :data="showData"
-      style="width: 100%">
+      style="width: 100%" :row-style="{ height: '60px'}" >
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
