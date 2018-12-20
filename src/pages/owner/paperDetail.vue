@@ -6,26 +6,26 @@
       <!--<el-button size="small" type="primary" @click="cancel()">取消</el-button>-->
 
       <el-col :span="12" :offset="6">
-          <el-card v-for="(question,index) in processedQuestionList" shadow="hover" style="margin: 10px"  >
-            <el-form   inline >
-              <el-form-item label="">
-                <span>{{(index+1)+'.' }}</span>
-              </el-form-item>
-              <el-form-item label="问题描述" >
-                <span>{{ question.quesDesc }}</span>
-              </el-form-item>
-              <div v-if=" question.quesType != '论述题' ">
-                <el-form-item label="问题选项" style="margin-left: 26px">
-                  <div v-for="item in question.option"><input type="radio" disabled="true"/> <span>{{item}}</span></div>
+            <el-card v-for="(question,index) in processedQuestionList" shadow="hover" style="margin: 10px"  >
+              <el-form   inline >
+                <el-form-item label="">
+                  <span>{{(index+1)+'.' }}</span>
                 </el-form-item>
-              </div>
-              <div v-if=" question.quesType == '论述题' " style="margin-left: 26px">
-                <el-form-item label="答">
-                  <el-input  type="textarea"  style="min-width: 600px"></el-input>
+                <el-form-item label="问题描述" >
+                  <span>{{ question.quesDesc }}</span>
                 </el-form-item>
-              </div>
-            </el-form>
-        </el-card>
+                <div v-if=" question.quesType != '论述题' ">
+                  <el-form-item label="问题选项" style="margin-left: 26px">
+                    <div v-for="item in question.option"><input type="radio" disabled="true"/> <span>{{item}}</span></div>
+                  </el-form-item>
+                </div>
+                <div v-if=" question.quesType == '论述题' " style="margin-left: 26px">
+                  <el-form-item label="答">
+                    <el-input  type="textarea"  style="min-width: 600px"></el-input>
+                  </el-form-item>
+                </div>
+              </el-form>
+            </el-card>
       </el-col>
 
     </el-row>
@@ -56,8 +56,6 @@
       this.getQuestions();
     },
     methods: {
-
-
       async getQuestions () {
 
         var res = await PaperService.getPaperById(this.$route.params.paper_id);
@@ -86,7 +84,11 @@
         QuestionService.processQuestionList(this.questionList, this.processedQuestionList, this.labelMap)
         // console.log(this.processedQuestionList)
       },
-
+    },
+    watch: {
+      $route () {
+        this.getQuestionList();
+      }
     }
   }
 </script>

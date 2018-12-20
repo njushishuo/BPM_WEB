@@ -7,7 +7,7 @@
       <el-col :span="21" style="height: 100%;overflow: auto;">
         <MyHeader></MyHeader>
         <keep-alive>
-          <router-view></router-view>
+          <router-view :key="$route.fullPath"></router-view>
         </keep-alive>
       </el-col>
     </el-row>
