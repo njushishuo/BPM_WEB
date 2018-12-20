@@ -7,8 +7,7 @@
             <header class="form_header">添加模板</header>
           </div>
           <div>
-            <el-form :model="templateForm" :rules="templateRules" ref="foodForm" label-width="110px"
-                     class="form food_form">
+            <el-form :model="templateForm" :rules="templateRules" ref="foodForm" label-width="110px">
               <el-form-item label="模板名称">
                 <el-input v-model="templateForm.name"></el-input>
               </el-form-item>
@@ -163,6 +162,26 @@
 <style lang="less" scoped>
   @import '../../style/mixin';
 
+  .form {
+    min-width: 400px;
+    margin-bottom: 30px;
+
+    &:hover {
+      box-shadow: 0 0 8px 0 rgba(232, 237, 250, .6), 0 2px 4px 0 rgba(232, 237, 250, .5);
+      border-radius: 6px;
+      transition: all 400ms;
+    }
+  }
+
+  .food_form {
+    border: 1px solid #eaeefb;
+    padding: 10px 10px 0;
+  }
+
+  .form_header {
+    text-align: center;
+    margin-bottom: 10px;
+  }
 
   .category_select {
     border: 1px solid #eaeefb;
@@ -248,5 +267,6 @@
     text-align: center;
   }
 </style>
+
 
 

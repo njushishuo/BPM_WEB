@@ -1,65 +1,61 @@
 <template>
+
   <div>
     <el-row style="margin-top: 20px;">
-      <el-col :span="14" :offset="4">
-        <header class="form_header">添加试题</header>
-        <el-form :model="questionForm" :rules="questionRules" ref="foodForm" label-width="110px" class="form food_form">
-
-          <el-form-item label="试题类型">
-            <el-radio class="radio" v-model="questionForm.questionType" label="ESSAY">论述题</el-radio>
-            <el-radio class="radio" v-model="questionForm.questionType" label="MULTIPLE_CHOICE">选择题</el-radio>
-          </el-form-item>
-
-          <el-form-item label="试题标签">
-            <el-select v-model="questionForm.selectedLabels" multiple placeholder="请选择">
-              <el-option
-                v-for="item in labels"
-                :key="item.id"
-                :label="item.label_name"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item label="试题描述" prop="description">
-            <el-input type="textarea" v-model="questionForm.description"></el-input>
-          </el-form-item>
-
-          <el-row v-if="questionForm.questionType == 'ESSAY'">
-            <el-form-item label="试题答案" prop="essayAnswer">
-              <el-input v-model="questionForm.essayAnswer"></el-input>
-            </el-form-item>
-          </el-row>
-
-          <el-row v-else>
-
-            <el-form-item label="试题选项" prop="choices">
-
-              <el-input v-model="questionForm.choiceEdit"></el-input>
-              <el-button type="" @click="addChoice" style="margin: 10px;">添加选项</el-button>
-              <el-button type="" @click="deleteChoice" style="margin: 10px;">删除选项</el-button>
-              <div v-for="item in questionForm.choices"><input type="radio"/> <span>{{item}}</span></div>
-
-            </el-form-item>
-
-            <el-form-item label="试题答案" prop="choiceAnswer">
-              <el-select v-model="questionForm.choiceAnswer" placeholder="请选择">
-                <el-option
-                  v-for="item in questionForm.charChoices"
-                  :key="item.key"
-                  :label="item.value"
-                  :value="item.key">
-                </el-option>
-              </el-select>
-            </el-form-item>
-
-          </el-row>
-          <div align="center">
-            <el-button type="primary" @click="addQuestion()">确认</el-button>
+      <el-col :span="12" :offset="6">
+        <el-card>
+          <div slot="header" >
+            <header class="form_header">添加试题</header>
           </div>
+          <div >
+            <el-form :model="questionForm" :rules="questionRules" ref="foodForm" label-width="110px">
+              <el-form-item label="试题类型">
+                <el-radio class="radio" v-model="questionForm.questionType" label="ESSAY">论述题</el-radio>
+                <el-radio class="radio" v-model="questionForm.questionType" label="MULTIPLE_CHOICE">选择题</el-radio>
+              </el-form-item>
 
-        </el-form>
-
+              <el-form-item label="试题标签">
+                <el-select v-model="questionForm.selectedLabels" multiple placeholder="请选择">
+                  <el-option
+                    v-for="item in labels"
+                    :key="item.id"
+                    :label="item.label_name"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="试题描述" prop="description">
+                <el-input type="textarea" v-model="questionForm.description"></el-input>
+              </el-form-item>
+              <el-row v-if="questionForm.questionType == 'ESSAY'">
+                <el-form-item label="试题答案" prop="essayAnswer">
+                  <el-input v-model="questionForm.essayAnswer"></el-input>
+                </el-form-item>
+              </el-row>
+              <el-row v-else>
+                <el-form-item label="试题选项" prop="choices">
+                  <el-input v-model="questionForm.choiceEdit"></el-input>
+                  <el-button type="" @click="addChoice" style="margin: 10px;">添加选项</el-button>
+                  <el-button type="" @click="deleteChoice" style="margin: 10px;">删除选项</el-button>
+                  <div v-for="item in questionForm.choices"><input type="radio"/> <span>{{item}}</span></div>
+                </el-form-item>
+                <el-form-item label="试题答案" prop="choiceAnswer">
+                  <el-select v-model="questionForm.choiceAnswer" placeholder="请选择">
+                    <el-option
+                      v-for="item in questionForm.charChoices"
+                      :key="item.key"
+                      :label="item.value"
+                      :value="item.key">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-row>
+              <div align="center">
+                <el-button type="primary" @click="addQuestion()">确认</el-button>
+              </div>
+            </el-form>
+          </div>
+        </el-card>
       </el-col>
     </el-row>
   </div>

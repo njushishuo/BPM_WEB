@@ -56,52 +56,65 @@ export default {
 
     // console.log(labelMap)
     // console.log(labelLevelMap)
+    // console.log(questionMap)
+    // console.log(questionList)
 
     var bestMatchScore = 5
 
     var paper = []
     for (var i = 0; i < templateItems.length; i++) {
+
+      /**
+       * process item
+       * get labelId, count
+       */
       var templateItem = templateItems[i]
       var index = templateItem.lastIndexOf(',')
       var labelIdString = templateItem.substring(0, index)
-      // console.log("tempLabel:"+labelIdString)
       var tempLabelId = parseInt(labelIdString)
+      var tempLabel = labelMap.get(tempLabelId)
       var count = templateItem.substring(index + 1, templateItem.length)
+
       var tempList = []
+      console.log('handle label:')
+      console.log(tempLabel)
       for (var j = 0; j < questionList.length; j++) {
         // console.log(questionList[j].labels)
         var score = 0
-        var tempLabel = labelMap.get(tempLabelId)
 
-        if (tempLabel.level == 2 && questionList[j].labels.indexOf(labelIdString) != -1) {
+        if (questionList[j].labels.indexOf(labelIdString) != -1) {
           score += tempLabel.level * bestMatchScore
         } else if (tempLabel.level == 1) {
-          score += countCrossLevelMatch(labelLevelMap.get(tempLabelId), questionList[j].labels)
+          var relationScore = countCrossLevelMatch(labelLevelMap.get(tempLabelId), questionList[j].labels)
+          score += relationScore
         }
 
-        tempList.push({
-          questionId: questionList[j].id,
-          questionLabels: questionList[j].labels,
-          score: score
-        })
+        if(score>0){
+          tempList.push({
+            questionId: questionList[j].id,
+            questionLabels: questionList[j].labels,
+            score: score
+          })
+        }
       }
+
       // console.log(tempList)
       tempList.sort(sortByScore)
-      // console.log(tempList)
+      console.log('sort questions:')
+      console.log(tempList)
 
       var tempCnt = 0
       for (var k = 0; k < tempList.length; k++) {
         if (tempCnt >= count) {
           break
         }
-        if (tempList[k].score >= 1) {
-          paper.push(questionMap.get(tempList[k].questionId))
-          tempCnt++
-        }
+        paper.push( questionMap.get(tempList[k].questionId) )
+        tempCnt++
       }
+      console.log('paper:')
+      console.log(paper)
     }
 
-    console.log(paper)
     return paper
 
   },

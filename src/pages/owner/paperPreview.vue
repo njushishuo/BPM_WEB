@@ -166,6 +166,9 @@
         })
 
         this.dialogVisible = false;
+
+        this.$router.go(-1);
+
       }
 
 
