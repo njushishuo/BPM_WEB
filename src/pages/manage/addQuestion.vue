@@ -27,7 +27,7 @@
 
           <el-row v-if="questionForm.questionType == 'ESSAY'">
             <el-form-item label="试题答案" prop="essayAnswer">
-              <el-input v-model="questionForm.name"></el-input>
+              <el-input v-model="questionForm.essayAnswer"></el-input>
             </el-form-item>
           </el-row>
 
@@ -79,7 +79,7 @@
           questionType: 'ESSAY',
           description: '',
           selectedLabels: [],
-          name: '',
+          essayAnswer: '',
           choices: [],
           choiceAnswer: '',
           choiceEdit: '',
@@ -135,7 +135,7 @@
           var question = {
             question_type: 'ESSAY',
             question_desc: this.questionForm.description,
-            answer: this.questionForm.name,
+            answer: this.questionForm.essayAnswer,
             labels: labelsString
           }
           QuestionService.addQuestion(question).then((res) => {
@@ -147,7 +147,7 @@
               })
               this.questionForm.description = '',
               this.questionForm.selectedLabels = [],
-              this.questionForm.name = ''
+              this.questionForm.essayAnswer = ''
             }
           })
         }else{

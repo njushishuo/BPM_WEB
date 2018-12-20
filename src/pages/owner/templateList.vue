@@ -1,59 +1,42 @@
 <template>
   <div>
-    <div class="table_container">
-      <el-table :data="showData" style="width: 100%">
-        <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-form label-position="left" inline class="demo-table-expand">
-              <div v-for="item in props.row.items">
-                <el-form-item label="试题标签" style="margin-left: 20px; margin-right: 20px">
-                    <el-tag>
-                      {{item.label}}
-                    </el-tag>
-
-                </el-form-item>
-
-                <el-form-item label="试题数目">
-                  <span>
-                      {{item.count}}
-                    </span>
-                </el-form-item>
-              </div>
-            </el-form>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="模板名称"
-          prop="name">
-        </el-table-column>
-        <el-table-column
-          label="项目名称"
-          prop="projectName">
-        </el-table-column>
-        <el-table-column
-          label="项目类型"
-          prop="projectType">
-        </el-table-column>
-        <el-table-column label="操作" width="300">
-          <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="addTemplate(scope.$index)">添加</el-button>
-            <el-button type="danger" size="mini" @click="deleteTemplate(scope.$index , scope.row)">删除</el-button>
-            <el-button type="success" size="mini" @click="createPaper(scope.$index)">导出试卷</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <div class="Pagination">
-        <el-pagination
-          @size-change=""
-          @current-change="this.handleCurrentChange"
-          :current-page="this.currentPage"
-          :page-size="this.limit"
-          layout="total, prev, pager, next"
-          :total="this.count">
-        </el-pagination>
-      </div>
+    <el-table :data="showData" style="width: 100%">
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <el-form label-position="left" inline class="demo-table-expand">
+            <div v-for="item in props.row.items">
+              <el-form-item label="试题标签" style="margin-left: 20px; margin-right: 20px">
+                <el-tag>{{item.label}}</el-tag>
+              </el-form-item>
+              <el-form-item label="试题数目">
+                  <span>{{item.count}}</span>
+              </el-form-item>
+            </div>
+          </el-form>
+        </template>
+      </el-table-column>
+      <el-table-column label="模板名称" prop="name"></el-table-column>
+      <el-table-column label="项目名称" prop="projectName"></el-table-column>
+      <el-table-column label="项目类型" prop="projectType"></el-table-column>
+      <el-table-column label="操作" width="300">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="addTemplate(scope.$index)">添加</el-button>
+          <el-button type="danger" size="mini" @click="deleteTemplate(scope.$index , scope.row)">删除</el-button>
+          <el-button type="success" size="mini" @click="createPaper(scope.$index)">导出试卷</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <div class="Pagination">
+      <el-pagination
+        @size-change=""
+        @current-change="this.handleCurrentChange"
+        :current-page="this.currentPage"
+        :page-size="this.limit"
+        layout="total, prev, pager, next"
+        :total="this.count">
+      </el-pagination>
     </div>
+
 
     <el-dialog title="试卷预览" :visible.sync="dialogVisible" class="dialog">
       <el-row v-for="(question,index) in processedPaper" style="margin-bottom: 20px">
@@ -82,7 +65,6 @@
     </el-dialog>
   </div>
 
-
 </template>
 
 <script>
@@ -93,16 +75,15 @@
   import LabelService from '../../services/labelService'
   import UtilService from '../../services/util'
 
-
   export default {
     name: 'TemplateList',
     data () {
       return {
 
-        project:{},
-        projectType:'',
+        project: {},
+        projectType: '',
         tableData: [],
-        showData:[],
+        showData: [],
         count: 0,
         limit: UtilService.limit,
         currentPage: 1,
@@ -157,7 +138,7 @@
 
         res = await ProjectService.getProjectById(this.$route.params.project_id)
         this.project = res.data
-        this.projectType = UtilService.recruit_type_map.get(this.project.recruit_type);
+        this.projectType = UtilService.recruit_type_map.get(this.project.recruit_type)
         // console.log(this.project.recruit_name)
 
         res = await TemplateService.getTemplatesByProjectId(this.$route.params.project_id)
@@ -188,7 +169,7 @@
             processedItems.push(processedItem)
           })
 
-          var labelNames = [];
+          var labelNames = []
           processedItems.map((item) => {
             labelNames.push(item.label)
           })
@@ -204,7 +185,7 @@
           }
 
           // console.log(processedTemplate)
-          this.tableData.push(processedTemplate);
+          this.tableData.push(processedTemplate)
 
           for (var i = 0; i < this.limit && i < this.count; i++) {
             this.showData[i] = this.tableData[i]
@@ -236,7 +217,7 @@
           }
         }
 
-        var i = index + (this.currentPage - 1) * this.limit;
+        var i = index + (this.currentPage - 1) * this.limit
         this.rawPaper = PaperService.createdPaperBy(this.rawTemplates[i], this.labelMap, this.questionMap, this.questionList, this.labelLevelMap)
         this.processedPaper = []
         QuestionService.processQuestionList(this.rawPaper, this.processedPaper, this.labelMap)
@@ -249,17 +230,17 @@
 
       async deleteTemplate (index, row) {
         try {
-          const res = await TemplateService.deleteTemplate(row.id);
+          const res = await TemplateService.deleteTemplate(row.id)
           if (res.status == 200) {
             this.$message({
               type: 'success',
               message: '删除成功'
-            });
+            })
 
-            var i = index + (this.currentPage - 1) * this.limit;
-            this.tableData.splice(i, 1);
-            this.rawTemplates.splice(i, 1);
-            this.showData.splice(index, 1);
+            var i = index + (this.currentPage - 1) * this.limit
+            this.tableData.splice(i, 1)
+            this.rawTemplates.splice(i, 1)
+            this.showData.splice(index, 1)
             this.count--
 
           } else {
@@ -269,7 +250,7 @@
           this.$message({
             type: 'error',
             message: err.message
-          });
+          })
           console.log('删除失败')
         }
       }

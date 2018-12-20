@@ -28,6 +28,11 @@ function countCrossLevelMatch (sonArray, questionLabels) {
 
 export default {
 
+
+  getPaperById(id){
+    return Axios.get('/Paper/'+id)
+  },
+
   getPapersByProjectId (projectId) {
     return Axios.get('/Paper/?Paper.recruit_id=' + projectId)
   },
