@@ -40,6 +40,11 @@ export default {
   deletePaper(id){
     return Axios.delete('/Paper/'+id)
   },
+
+  addPaper(paper){
+    return Axios.post('/Paper', paper)
+  },
+
   createdPaperBy (template, labelMap, questionMap, questionList, labelLevelMap) {
     var templateItems = []
 

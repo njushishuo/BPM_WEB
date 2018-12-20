@@ -45,6 +45,7 @@
 
 
               <div align="center" style="margin-top: 30px">
+                <el-button type="primary" @click="cancelTemplate">取消</el-button>
                 <el-button type="primary" @click="addTemplate">确认</el-button>
               </div>
 
@@ -129,6 +130,13 @@
           }
         })
       },
+
+      cancelTemplate(){
+
+        this.$router.go(-1);
+
+      },
+
       addItem () {
         var item = {
           labelId: this.templateForm.editLabel,

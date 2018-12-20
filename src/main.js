@@ -6,7 +6,7 @@ import router from './router'
 import Axios from 'axios'
 import ElementUI from 'element-ui'
 import VueCookie from 'vue-cookie'
-import 'element-ui/lib/theme-default/index.css';
+import 'element-ui/lib/theme-default/index.css'
 
 Axios.defaults.baseURL = 'http://47.107.241.57:8080/Entity/Uf47c4842079e/SmartHRv2/'
 Vue.config.productionTip = false

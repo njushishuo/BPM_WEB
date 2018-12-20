@@ -9,7 +9,7 @@
       >
       </el-table-column>
       <el-table-column
-        label="模板名称"
+        label="试卷名称"
         prop="paper_name">
       </el-table-column>
       <el-table-column

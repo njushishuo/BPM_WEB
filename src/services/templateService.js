@@ -6,6 +6,11 @@ export default {
     return Axios.get('/Template/?Template.recruit_id='+projectId)
   },
 
+
+  getTemplateById(id){
+    return Axios.get('/Template/'+id)
+  },
+
   deleteTemplate(id){
     return Axios.delete('/Template/'+id)
   },

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="fillcontent">
     <el-table :data="showData" style="width: 100%">
       <el-table-column type="expand">
         <template slot-scope="props">
@@ -9,7 +9,7 @@
                 <el-tag>{{item.label}}</el-tag>
               </el-form-item>
               <el-form-item label="试题数目">
-                  <span>{{item.count}}</span>
+                <span>{{item.count}}</span>
               </el-form-item>
             </div>
           </el-form>
@@ -36,42 +36,12 @@
         :total="this.count">
       </el-pagination>
     </div>
-
-
-    <el-dialog title="试卷预览" :visible.sync="dialogVisible" class="dialog">
-      <el-row v-for="(question,index) in processedPaper" style="margin-bottom: 20px">
-        <el-col>
-          <el-card>
-            <div slot="header">
-              <span>{{question.quesType}}</span>
-            </div>
-            <div>
-              <div class="questionItem">
-                <span>{{question.quesDesc}}</span>
-              </div>
-
-              <div class="questionItem" v-if=" question.quesType != '论述题' ">
-                <div class="questionItem" v-for="item in question.option"><input type="radio"/> <span>{{item}}</span>
-                </div>
-              </div>
-
-              <div class="questionItem" v-if=" question.quesType == '论述题' ">
-                <el-input type="textarea"/>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
-    </el-dialog>
   </div>
-
 </template>
 
 <script>
   import TemplateService from '../../services/templateService'
   import ProjectService from '../../services/projectService'
-  import QuestionService from '../../services/questionService'
-  import PaperService from '../../services/paperService'
   import LabelService from '../../services/labelService'
   import UtilService from '../../services/util'
 
@@ -90,16 +60,8 @@
 
         // id - labelObj Map
         labelMap: new Map(),
-        // parentId - sonIdArray Map
-        labelLevelMap: new Map(),
-        // id - questionObj Map
-        questionMap: new Map(),
-        rawQuestions: [],
         rawTemplates: [],
-        rawLabels: [],
-        rawPaper: [],
-        processedPaper: [],
-        dialogVisible: false
+
       }
     },
     created () {
@@ -124,7 +86,6 @@
           var tempData = res.data.Label
           // console.log("get labels")
           // console.log(tempData)
-          this.rawLabels = tempData
           tempData.map((obj) => {
             if (obj.parent_id == '0') {
               obj.level = 1
@@ -194,34 +155,10 @@
         })
       },
 
-      async createPaper (index, row) {
-        // console.log(index);
-
-        if (this.questionMap.size == 0) {
-          var res = await QuestionService.getQuestionList()
-          this.questionList = res.data.Question
-          this.questionList.map((obj) => {
-            this.questionMap.set(obj.id, obj)
-          })
-        }
-        if (this.labelLevelMap.size == 0) {
-          for (var i = 0; i < this.rawLabels.length; i++) {
-            if (this.rawLabels[i].parent_id == '0') {
-              this.labelLevelMap.set(this.rawLabels[i].id, [])
-            }
-          }
-          for (var i = 0; i < this.rawLabels.length; i++) {
-            if (this.rawLabels[i].parent_id != '0') {
-              this.labelLevelMap.get(parseInt(this.rawLabels[i].parent_id)).push(this.rawLabels[i].id)
-            }
-          }
-        }
-
+      async createPaper (index) {
         var i = index + (this.currentPage - 1) * this.limit
-        this.rawPaper = PaperService.createdPaperBy(this.rawTemplates[i], this.labelMap, this.questionMap, this.questionList, this.labelLevelMap)
-        this.processedPaper = []
-        QuestionService.processQuestionList(this.rawPaper, this.processedPaper, this.labelMap)
-        this.dialogVisible = true
+        var templateId = this.rawTemplates[i].id
+        this.$router.push({name:'PaperPreview' , params:{template_id:templateId}});
       },
 
       addTemplate () {

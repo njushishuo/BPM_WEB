@@ -51,13 +51,11 @@
 
       }
     },
-
     created(){
       this.getQuestions();
     },
     methods: {
       async getQuestions () {
-
         var res = await PaperService.getPaperById(this.$route.params.paper_id);
         this.paper = res.data;
         // console.log(this.paper)
@@ -69,7 +67,6 @@
             this.labelMap.set(obj.id, obj)
           })
         }
-
         this.questionList = [];
         this.processedQuestionList = [];
         res = await QuestionService.getQuestionList()
@@ -84,11 +81,6 @@
         QuestionService.processQuestionList(this.questionList, this.processedQuestionList, this.labelMap)
         // console.log(this.processedQuestionList)
       },
-    },
-    watch: {
-      $route () {
-        this.getQuestionList();
-      }
     }
   }
 </script>

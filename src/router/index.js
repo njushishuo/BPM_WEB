@@ -11,6 +11,7 @@ import ProjectList from '@/pages/manage/projectList'
 import MyProjectList from '@/pages/owner/myProjectList'
 import ProjectDetail from '@/pages/owner/projectDetail'
 import PaperDetail from '@/pages/owner/paperDetail'
+import PaperPreview from '@/pages/owner/paperPreview'
 import TemplateList from '@/pages/owner/templateList'
 import PaperList from '@/pages/owner/paperList'
 import AddProject from '@/pages/owner/addProject'
@@ -102,6 +103,12 @@ export default new Router({
           name:'AddTemplate',
           component:AddTemplate,
           meta:['添加数据','添加模板']
+        },
+        {
+          path:'/template/:template_id/paperPreview',
+          name:'PaperPreview',
+          component:PaperPreview,
+          meta:['添加数据','预览模板']
         }
       ]},
 
