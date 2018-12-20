@@ -32,6 +32,9 @@ export default {
     return Axios.get('/Paper/?Paper.recruit_id=' + projectId)
   },
 
+  deletePaper(id){
+    return Axios.delete('/Paper/'+id)
+  },
   createdPaperBy (template, labelMap, questionMap, questionList, labelLevelMap) {
     var templateItems = []
 

@@ -150,5 +150,8 @@
 </script>
 
 <style scoped>
-
+  .el-button--mini {
+    padding: 7px 10px;
+    width: 60px;
+  }
 </style>

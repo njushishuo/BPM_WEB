@@ -58,7 +58,7 @@
     },
 
     created () {
-      this.getUserListFuc();
+      this.getPaperListFuc();
     },
 
     methods: {
@@ -72,7 +72,7 @@
         }
       },
 
-      getUserListFuc () {
+      getPaperListFuc () {
           UserService.getUserList().then((res)=>{
           this.tableData = res.data.User;
            console.log("tableData:/n");
@@ -93,10 +93,4 @@
   }
 </script>
 
-<style lang="less" scoped>
-  @import '../../style/mixin';
 
-  .table_container {
-    padding: 20px;
-  }
-</style>

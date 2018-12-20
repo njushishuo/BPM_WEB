@@ -10,6 +10,7 @@ import ProjectList from '@/pages/manage/projectList'
 
 import MyProjectList from '@/pages/owner/myProjectList'
 import ProjectDetail from '@/pages/owner/projectDetail'
+import PaperDetail from '@/pages/owner/paperDetail'
 import TemplateList from '@/pages/owner/templateList'
 import PaperList from '@/pages/owner/paperList'
 import AddProject from '@/pages/owner/addProject'
@@ -63,7 +64,7 @@ export default new Router({
           path:'/myProjectList',
           name:'MyProjectList',
           component:MyProjectList,
-          meta:['数据管理','我的项目']
+          meta:['数据管理','项目管理']
         },
         {
           path:'/projectDetail/:project_id',
@@ -81,7 +82,13 @@ export default new Router({
           path:'/project/:project_id/paperList',
           name:'PaperList',
           component:PaperList,
-          meta:['数据管理','项目详情']
+          meta:['数据管理','试卷管理']
+        },
+        {
+          path:'/paper/:paper_id',
+          name:'PaperDetail',
+          component:PaperDetail,
+          meta:['数据管理','试卷详情']
         },
         {
           path:'/addProject',

@@ -30,6 +30,10 @@
           label="项目名称"
           prop="projectName">
         </el-table-column>
+        <el-table-column
+          label="项目类型"
+          prop="projectType">
+        </el-table-column>
         <el-table-column label="操作" width="300">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="addTemplate(scope.$index)">添加</el-button>
@@ -96,6 +100,7 @@
       return {
 
         project:{},
+        projectType:'',
         tableData: [],
         showData:[],
         count: 0,
@@ -152,7 +157,8 @@
 
         res = await ProjectService.getProjectById(this.$route.params.project_id)
         this.project = res.data
-        console.log(this.project.recruit_name)
+        this.projectType = UtilService.recruit_type_map.get(this.project.recruit_type);
+        // console.log(this.project.recruit_name)
 
         res = await TemplateService.getTemplatesByProjectId(this.$route.params.project_id)
         // console.log(res)
@@ -193,7 +199,8 @@
             items: processedItems,
             recruit_id: obj.recruit_id,
             labelNames: labelNames,
-            projectName: this.project.recruit_name
+            projectName: this.project.recruit_name,
+            projectType: this.projectType,
           }
 
           // console.log(processedTemplate)
@@ -241,7 +248,6 @@
       },
 
       async deleteTemplate (index, row) {
-        var i = index + (this.currentPage - 1) * this.limit;
         try {
           const res = await TemplateService.deleteTemplate(row.id);
           if (res.status == 200) {
@@ -266,7 +272,6 @@
           });
           console.log('删除失败')
         }
-
       }
     }
   }

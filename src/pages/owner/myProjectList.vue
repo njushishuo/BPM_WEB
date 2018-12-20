@@ -116,7 +116,7 @@
           this.$router.push({name:'ProjectDetail', params:{project_id : projectId}} );
         }else if ( command == 'template'){
           this.$router.push({name:'TemplateList', params:{project_id : projectId}} );
-        }else if(command == 'rawPaper'){
+        }else if(command == 'paper'){
           this.$router.push({name:'PaperList', params:{project_id : projectId}} );
         }
       },
