@@ -38,10 +38,10 @@
     </el-row>
 
 
-    <el-dialog title="确认模板名称"
+    <el-dialog title="确认试卷名称"
         :visible.sync="dialogVisible">
       <el-form inline >
-        <el-form-item label="模板名称" >
+        <el-form-item label="试卷名称" >
           <el-input  v-model="paperName" style="min-width: 500px"></el-input>
         </el-form-item>
       </el-form>
