@@ -6,10 +6,10 @@
           <el-form label-position="left" inline class="demo-table-expand">
             <div v-for="item in props.row.items">
               <el-form-item label="试题标签" style="margin-left: 20px; margin-right: 20px">
-                <el-tag>{{item.label}}</el-tag>
+                <el-tag  type="primary">{{item.label}}</el-tag>
               </el-form-item>
               <el-form-item label="试题数目">
-                <span>{{item.count}}</span>
+                <span style="font-weight: bold">{{item.count}}</span>
               </el-form-item>
             </div>
           </el-form>

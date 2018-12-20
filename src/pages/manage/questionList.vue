@@ -29,8 +29,15 @@
         prop="quesType">
       </el-table-column>
       <el-table-column
-        label="标签"
-        prop="label">
+        label="标签">
+
+        <template slot-scope="props">
+          <div class="cell">
+            <el-tag v-for="label in props.row.label" style="margin-right: 10px" type="primary">{{label}}</el-tag>
+          </div>
+        </template>
+
+
       </el-table-column>
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">

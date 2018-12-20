@@ -10,6 +10,11 @@
             <el-form-item label="问题描述" >
               <span>{{ question.quesDesc }}</span>
             </el-form-item>
+            <br/>
+            <el-form-item label="试题标签" style="margin-left: 26px" >
+              <el-tag v-for="label in question.label" style="margin-right: 10px" type="primary">{{label}}</el-tag>
+            </el-form-item>
+
             <div v-if=" question.quesType != '论述题' ">
               <el-form-item label="问题选项" style="margin-left: 26px">
                 <div v-for="item in question.option"><input type="radio" disabled="true"/> <span>{{item}}</span></div>
@@ -24,8 +29,8 @@
         </el-card>
 
         <div align="center">
-          <el-button size="small" type="primary" @click="cancelPaper()">取消</el-button>
-          <el-button size="small" type="success" @click="confirmPaper()">保存</el-button>
+          <el-button  type="primary" style="margin-bottom: 20px;"  @click="cancelPaper()">取消</el-button>
+          <el-button  type="success" style="margin-bottom: 20px;"  @click="confirmPaper()">保存</el-button>
         </div>
 
       </el-col>
