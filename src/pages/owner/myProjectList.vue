@@ -40,10 +40,10 @@
       <el-pagination
         @size-change=""
         @current-change="this.handleCurrentChange"
-        :current-page="currentPage"
-        :page-size="15"
+        :current-page="this.currentPage"
+        :page-size="this.limit"
         layout="total, prev, pager, next"
-        :total="count">
+        :total="this.count">
       </el-pagination>
     </div>
   </div>
@@ -70,7 +70,7 @@
     },
     methods: {
 
-      handleCurrentChange (val) {
+      handleCurrentChange(val) {
         this.currentPage = val
         this.showData = []
         var start = (this.currentPage - 1) * this.limit
@@ -80,7 +80,7 @@
         }
       },
 
-      getProjects () {
+      getProjects() {
         ProjectService.getProjectListByUserId(this.$cookie.get('userId')).then((res) => {
           console.log(res)
 
@@ -99,11 +99,11 @@
         })
       },
 
-      handleClick (index) {
+      handleClick(index) {
         this.clickIndex = index
       },
 
-      handleSelect (command) {
+      handleSelect(command) {
         console.log(command, this.clickIndex)
         var projectId = this.showData[this.clickIndex].id
 
@@ -116,28 +116,30 @@
         }
       },
 
-      async handleDelete (index, row) {
+      async handleDelete(index, row) {
         // console.log(row)
-        // try{
-        //   const res = await QuestionService.deleteQuestion(row.id);
-        //   if (res.status == 200) {
-        //     this.$message({
-        //       type: 'success',
-        //       message: '删除成功'
-        //     });
-        //
-        //     var i = index + (this.currentPage-1)*this.limit;
-        //     this.tableData.splice(i, 1);
-        //     this.showData.splice(index,1);
-        //   }else{
-        //     throw new Error(res.message)
-        //   }
-        // }catch(err){
-        //   this.$message({
-        //     type: 'error',
-        //     message: err.message
-        //   });
-        //   console.log('删除失败')
+        try {
+          const res = await ProjectService.deleteProjectById(row.id);
+          if (res.status == 200) {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            });
+
+            var i = index + (this.currentPage - 1) * this.limit;
+            this.tableData.splice(i, 1);
+            this.showData.splice(index, 1);
+            this.count--;
+          } else {
+            throw new Error(res.message)
+          }
+        } catch (err) {
+          this.$message({
+            type: 'error',
+            message: err.message
+          });
+          console.log('删除失败')
+        }
       }
     }
   }

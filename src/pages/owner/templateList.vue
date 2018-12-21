@@ -20,7 +20,7 @@
       <el-table-column label="项目类型" prop="projectType"></el-table-column>
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="addTemplate()">添加</el-button>
+          <el-button type="primary" size="mini"  @click="addTemplate()">添加</el-button>
           <el-button type="danger" size="mini" @click="deleteTemplate(scope.$index , scope.row)">删除</el-button>
           <el-button type="success" size="mini" @click="createPaper(scope.$index)">导出试卷</el-button>
         </template>
@@ -34,8 +34,11 @@
         :page-size="this.limit"
         layout="total, prev, pager, next"
         :total="this.count">
+
       </el-pagination>
+
     </div>
+
   </div>
 </template>
 

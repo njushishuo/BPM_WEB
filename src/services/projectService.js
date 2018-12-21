@@ -16,7 +16,11 @@ export default {
 
   addProject(para){
     return Axios.post('/Recruit',para)
-  }
+  },
+
+  deleteProjectById(id){
+    return Axios.delete('/Recruit/'+id)
+  },
 
 
 }

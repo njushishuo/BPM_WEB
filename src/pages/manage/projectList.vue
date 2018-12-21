@@ -28,10 +28,10 @@
       <el-pagination
         @size-change=""
         @current-change="this.handleCurrentChange"
-        :current-page="currentPage"
-        :page-size="15"
+        :current-page="this.currentPage"
+        :page-size="this.limit"
         layout="total, prev, pager, next"
-        :total="count">
+        :total="this.count">
       </el-pagination>
     </div>
   </div>
