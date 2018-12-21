@@ -5,14 +5,16 @@
       <!--<el-button size="small" type="success" @click="savePaper()">保存</el-button>-->
       <!--<el-button size="small" type="primary" @click="cancel()">取消</el-button>-->
 
-      <el-col :span="12" :offset="6">
+      <el-col :span="14" :offset="5">
             <el-card v-for="(question,index) in processedQuestionList" shadow="hover" style="margin: 10px"  >
               <el-form   inline >
                 <el-form-item label="">
                   <span>{{(index+1)+'.' }}</span>
                 </el-form-item>
                 <el-form-item label="试题描述" >
-                  <span>{{ question.quesDesc }}</span>
+                  <div style="max-width : 600px">
+                    <p >{{ question.quesDesc }}</p>
+                  </div>
                 </el-form-item>
                 <br/>
                 <el-form-item label="试题标签" style="margin-left: 26px" >

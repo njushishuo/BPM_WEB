@@ -1,14 +1,16 @@
 <template>
   <div class="fillcontent">
     <el-row >
-      <el-col :span="12" :offset="6">
+      <el-col :span="14" :offset="5">
         <el-card v-for="(question,index) in processedQuestionList" shadow="hover" style="margin: 10px"  >
           <el-form inline >
             <el-form-item label="">
               <span>{{(index+1)+'.' }}</span>
             </el-form-item>
-            <el-form-item label="问题描述" >
-              <span>{{ question.quesDesc }}</span>
+            <el-form-item label="试题描述" >
+              <div style="max-width : 600px">
+                <p >{{ question.quesDesc }}</p>
+              </div>
             </el-form-item>
             <br/>
             <el-form-item label="试题标签" style="margin-left: 26px" >
@@ -27,17 +29,12 @@
             </div>
           </el-form>
         </el-card>
-
         <div align="center">
           <el-button  type="primary" style="margin-bottom: 20px;"  @click="cancelPaper()">取消</el-button>
           <el-button  type="success" style="margin-bottom: 20px;"  @click="confirmPaper()">保存</el-button>
         </div>
-
       </el-col>
-
     </el-row>
-
-
     <el-dialog title="确认试卷名称"
         :visible.sync="dialogVisible">
       <el-form inline >
